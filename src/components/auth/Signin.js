@@ -10,7 +10,7 @@ const Signin = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log(email, password)
+    console.log(authError)
     dispatch(signIn({ email, password }))
   }
   return (
@@ -41,6 +41,7 @@ const Signin = () => {
           <button className="btn pink lighten-1 z-depth-0">Sign In</button>
         </div>
       </form>
+      <div className="red-text center">{authError && <p>{authError}</p>}</div>
     </div>
   )
 }

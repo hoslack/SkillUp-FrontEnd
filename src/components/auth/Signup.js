@@ -1,14 +1,19 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { signUp } from '../../store/actions'
 
 const Signup = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch()
+
+  const handleSubmit = e => {
     e.preventDefault()
-    console.log(email, password, firstName, lastName)
+    dispatch(signUp({ firstName, lastName, username, email, password }))
   }
   return (
     <div className="container">
@@ -17,22 +22,47 @@ const Signup = () => {
 
         <div className="input-field">
           <label htmlFor="firstName">First Name</label>
-          <input type="text" id="firstName" onChange={e=>setFirstName(e.target.value)}/>
+          <input
+            type="text"
+            id="firstName"
+            onChange={e => setFirstName(e.target.value)}
+          />
         </div>
 
         <div className="input-field">
           <label htmlFor="lastName">Last Name</label>
-          <input type="text" id="lastName" onChange={e=>setLastName(e.target.value)}/>
+          <input
+            type="text"
+            id="lastName"
+            onChange={e => setLastName(e.target.value)}
+          />
+        </div>
+
+        <div className="input-field">
+          <label htmlFor="username">User Name</label>
+          <input
+            type="text"
+            id="username"
+            onChange={e => setUsername(e.target.value)}
+          />
         </div>
 
         <div className="input-field">
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" onChange={e=>setEmail(e.target.value)}/>
+          <input
+            type="email"
+            id="email"
+            onChange={e => setEmail(e.target.value)}
+          />
         </div>
 
         <div className="input-field">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" onChange={e=>setPassword(e.target.value)}/>
+          <input
+            type="password"
+            id="password"
+            onChange={e => setPassword(e.target.value)}
+          />
         </div>
 
         <div className="input-field">

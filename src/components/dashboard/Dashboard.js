@@ -1,10 +1,13 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Notifications } from './index'
 import { ResumeList } from '../resumes'
 
 const Dashboard = () => {
   const resumes = useSelector(state => state.resume.resumes)
+  const auth = useSelector(state => state.firebase.auth)
+  if (!auth.uid) return <Redirect to="/" />
 
   return (
     <div className="dashboard container">

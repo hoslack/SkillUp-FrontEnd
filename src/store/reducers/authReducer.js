@@ -1,4 +1,5 @@
-import { LOGIN_ERROR, LOGIN_SUCCESS } from '../types'
+import types from '../types'
+const getTypes = types()
 
 const initialState = {
   authError: null
@@ -6,17 +7,31 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_ERROR:
-      console.log('Log in Error')
+    case getTypes.LOGIN_ERROR:
       return {
         ...state,
-        authError: 'Could not log in'
+        authError: action.payload.message
       }
-    case LOGIN_SUCCESS:
-      console.log('Logged in Successfully')
+    case getTypes.LOGIN_SUCCESS:
       return {
         ...state,
-        authError: 'null'
+        authError: null
+      }
+    case getTypes.LOGOUT_SUCCESS:
+      return {
+        ...state
+      }
+    case getTypes.SIGNUP_SUCCESS:
+      console.log('Sign up Success')
+      return {
+        ...state,
+        authError: null
+      }
+    case getTypes.SIGNUP_ERROR:
+      console.log('Sign up Error')
+      return {
+        ...state,
+        authError: action.payload.message
       }
     default:
       return state
