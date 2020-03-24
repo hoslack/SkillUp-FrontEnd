@@ -1,75 +1,105 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
+import { Form, Input, Button } from 'antd'
 import { signUp } from '../../store/actions'
 
+const layout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 16
+  }
+}
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16
+  }
+}
 const Signup = () => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
   const dispatch = useDispatch()
-
-  const handleSubmit = e => {
-    e.preventDefault()
+  const onFinish = ({ firstName, lastName, username, email, password }) => {
     dispatch(signUp({ firstName, lastName, username, email, password }))
   }
+
+  const onFinishFailed = errorInfo => {
+    console.log('Failed:', errorInfo)
+  }
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit} className="white">
-        <h5 className="grey-text text-darken-3 ">Sign Up</h5>
+    <Form
+      {...layout}
+      style={{ paddingRight: '50%' }}
+      name="basic"
+      initialValues={{}}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}>
+      <Form.Item
+        label="First Name"
+        name="firstName"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your first name!'
+          }
+        ]}>
+        <Input />
+      </Form.Item>
 
-        <div className="input-field">
-          <label htmlFor="firstName">First Name</label>
-          <input
-            type="text"
-            id="firstName"
-            onChange={e => setFirstName(e.target.value)}
-          />
-        </div>
+      <Form.Item
+        label="Last Name"
+        name="lastName"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your last name!'
+          }
+        ]}>
+        <Input />
+      </Form.Item>
 
-        <div className="input-field">
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            type="text"
-            id="lastName"
-            onChange={e => setLastName(e.target.value)}
-          />
-        </div>
+      <Form.Item
+        label="Username"
+        name="username"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your username!'
+          }
+        ]}>
+        <Input />
+      </Form.Item>
 
-        <div className="input-field">
-          <label htmlFor="username">User Name</label>
-          <input
-            type="text"
-            id="username"
-            onChange={e => setUsername(e.target.value)}
-          />
-        </div>
+      <Form.Item
+        label="Email"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your email!'
+          }
+        ]}>
+        <Input />
+      </Form.Item>
 
-        <div className="input-field">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            onChange={e => setEmail(e.target.value)}
-          />
-        </div>
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your password!'
+          }
+        ]}>
+        <Input.Password />
+      </Form.Item>
 
-        <div className="input-field">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            onChange={e => setPassword(e.target.value)}
-          />
-        </div>
-
-        <div className="input-field">
-          <button className="btn pink lighten-1 z-depth-0">Sign Up</button>
-        </div>
-      </form>
-    </div>
+      <Form.Item {...tailLayout}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
   )
 }
 
