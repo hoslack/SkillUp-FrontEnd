@@ -12,7 +12,7 @@ const PrivateLinks = () => {
       mode="horizontal"
       style={{ lineHeight: '64px', float: 'right' }}>
       <Menu.Item key="1">
-        <NavLink to="/">New CV</NavLink>
+        <NavLink to="/resume">Resume</NavLink>
       </Menu.Item>
 
       <Menu.Item key="2">
