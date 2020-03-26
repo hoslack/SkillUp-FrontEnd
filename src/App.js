@@ -12,7 +12,6 @@ import { firebase as fbConfig, rrfConfig } from './config/config'
 import 'antd/dist/antd.css'
 import './index.css'
 import { Page } from './components'
-/* eslint react/prop-types: 0 */
 
 const initialState = window && window.__INITIAL_STATE__ // set initial state here
 const store = configureStore(initialState)

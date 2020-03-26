@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React from 'react'
 import 'antd/dist/antd.css'
 import { Layout } from 'antd'
@@ -6,12 +7,10 @@ import { Dashboard } from './dashboard'
 import { Resume } from './resumes'
 import { Signin, Signup } from './auth'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
-// import { ReactReduxFirebaseProvider } from 'react-redux-firebase'
 
 const { Content } = Layout
 
 const Page = props => {
-  // eslint-disable-next-line no-console
   const firebase = props.firebase
   return (
     <BrowserRouter>

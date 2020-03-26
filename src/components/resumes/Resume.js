@@ -74,7 +74,8 @@ const Resume = props => {
       uploadTask.on(
         'state_changed',
         snapshot => {
-          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           console.log('Upload is ' + progress + '% done')
           switch (snapshot.state) {
             case firebase.storage.TaskState.PAUSED:
@@ -86,10 +87,25 @@ const Resume = props => {
           }
         },
         error => {
-          setUploadError(error)
+          switch (error.code) {
+            case 'storage/unauthorized':
+              setUploadError('You do not have permission to Upload the File')
+              break
+            case 'storage/canceled':
+              setUploadError('Upload Cancelled')
+              break
+            case 'storage/unauthenticated':
+              setUploadError('Please log in and try again')
+              break
+            case 'storage/unknown':
+              setUploadError(
+                'An Internal Error Occurred, Please Contact Support'
+              )
+              break
+          }
         },
         () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
             console.log('File available at', downloadURL)
           })
         }
