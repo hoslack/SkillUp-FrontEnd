@@ -1,4 +1,5 @@
 import types from '../types'
+import history from '../../history'
 const getTypes = types()
 
 export const signUp = ({ firstName, lastName, username, email, password }) => {
@@ -47,6 +48,7 @@ export const signOut = () => {
       .logout()
       .then(() => {
         dispatch({ type: getTypes.LOGOUT_SUCCESS, payload: {} })
+        history.push('/')
       })
       .catch(() => {
         dispatch({ type: getTypes.LOGOUT_ERROR })

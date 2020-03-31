@@ -8,6 +8,9 @@ const PublicLinks = () => {
       theme="dark"
       mode="horizontal"
       style={{ lineHeight: '64px', float: 'right' }}>
+      <Menu.Item key="0">
+        <NavLink to="/">Home</NavLink>
+      </Menu.Item>
       <Menu.Item key="1">
         <NavLink to="/signin">Sign In</NavLink>
       </Menu.Item>

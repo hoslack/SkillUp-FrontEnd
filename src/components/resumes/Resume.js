@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import prettyBytes from 'pretty-bytes'
+import PDFViewer from 'pdf-viewer-reactjs'
 
 const baseStyle = {
   flex: 1,
@@ -42,8 +43,9 @@ const uploadStyle = {
 
 const Resume = props => {
   const [uploadError, setUploadError] = useState('')
+  const state = useSelector(state => state)
   const profile = useSelector(state => state.firebase.profile)
-  console.log(profile && profile)
+  console.log(state)
   const {
     acceptedFiles,
     getRootProps,
@@ -116,26 +118,51 @@ const Resume = props => {
   }
 
   return (
-    <section>
-      <div {...getRootProps({ style })}>
-        <input {...getInputProps()} />
-        <p>
-          Drag 'n' drop your file here, or click to select a file (PDF Only)
-        </p>
-      </div>
-      {acceptedFiles[0] && (
-        <div style={uploadStyle}>
-          <ul style={{ marginBottom: '10px' }}>
-            <li key={acceptedFiles[0].path}>
-              {acceptedFiles[0].path} - {prettyBytes(acceptedFiles[0].size)}
-            </li>
-          </ul>
-          <Button type="primary" onClick={onUpload}>
-            <UploadOutlined /> Upload
-          </Button>
-        </div>
+    <div className="vh-100">
+      {profile && !profile.resume && (
+        <section>
+          <div {...getRootProps({ style })}>
+            <input {...getInputProps()} />
+            <p>
+              Drag 'n' drop your file here, or click to select a file (PDF Only)
+            </p>
+          </div>
+          {acceptedFiles[0] && (
+            <div style={uploadStyle}>
+              <ul style={{ marginBottom: '10px' }}>
+                <li key={acceptedFiles[0].path}>
+                  {acceptedFiles[0].path} - {prettyBytes(acceptedFiles[0].size)}
+                </li>
+              </ul>
+              <Button type="primary" onClick={onUpload}>
+                <UploadOutlined /> Upload
+              </Button>
+            </div>
+          )}
+        </section>
       )}
-    </section>
+
+      <div>
+        <div className="fl w-70">
+          {profile && profile.resume && (
+            <PDFViewer
+              css={{ padding: '1px', width: '300px' }}
+              canvasCss={{}}
+              navbarOnTop
+              hideRotation
+              page={1}
+              scale={1.4}
+              scaleStep={0.1}
+              maxScale={1.5}
+              minScale={1}
+              document={{
+                base64: profile.resume
+              }}
+            />
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
 
