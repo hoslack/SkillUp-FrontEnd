@@ -1,5 +1,5 @@
-/* eslint react/prop-types: 0 */
 import React, { useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
@@ -42,6 +42,8 @@ const uploadStyle = {
 
 const Resume = props => {
   const [uploadError, setUploadError] = useState('')
+  const profile = useSelector(state => state.firebase.profile)
+  console.log(profile && profile)
   const {
     acceptedFiles,
     getRootProps,

@@ -4,9 +4,19 @@ const getTypes = types()
 export const signUp = ({ firstName, lastName, username, email, password }) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase()
-    const firestore = getFirebase().firestore()
     firebase
-      .createUser({ email, password }, { username, email, firstName, lastName })
+      .createUser(
+        { email, password },
+        {
+          username,
+          email,
+          firstName,
+          lastName,
+          resume: '',
+          admin: false,
+          profession: ''
+        }
+      )
       .then(() => {
         dispatch({ type: getTypes.SIGNUP_SUCCESS, payload: {} })
       })

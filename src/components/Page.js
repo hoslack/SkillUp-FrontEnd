@@ -2,11 +2,13 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import { Layout } from 'antd'
-import { Navbar, SideBar, Home } from './index'
-import { Dashboard } from './dashboard'
-import { Resume } from './resumes'
 import { Signin, Signup } from './auth'
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import Navbar from './layouts/Navbar'
+import SideBar from './layouts/SideBar'
+import Home from './Home'
+import Dashboard from './dashboard/Dashboard'
+import Resume from './resumes/Resume'
 
 const { Content } = Layout
 

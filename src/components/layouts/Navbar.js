@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { PrivateLinks, PublicLinks } from './index'
+import PrivateLinks from './PrivateLinks'
+import PublicLinks from './PublicLinks'
 import { Layout } from 'antd'
 import Logo from '../../utils/icons/logo.png'
 

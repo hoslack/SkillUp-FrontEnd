@@ -9,9 +9,8 @@ import { ReactReduxFirebaseProvider } from 'react-redux-firebase'
 import { createFirestoreInstance } from 'redux-firestore'
 import configureStore from './store/store'
 import { firebase as fbConfig, rrfConfig } from './config/config'
-import 'antd/dist/antd.css'
 import './index.css'
-import { Page } from './components'
+import Page from './components/Page'
 
 const initialState = window && window.__INITIAL_STATE__ // set initial state here
 const store = configureStore(initialState)

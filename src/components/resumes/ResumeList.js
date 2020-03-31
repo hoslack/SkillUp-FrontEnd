@@ -1,5 +1,6 @@
+/* eslint react/prop-types: 0 */
 import React from 'react'
-import { ResumeSummary } from './index'
+import ResumeSummary from './ResumeSummary'
 
 const ResumeList = ({ resumes }) => {
   return (

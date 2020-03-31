@@ -9,10 +9,25 @@ export const firebase = {
   measurementId: 'G-JRBGT9N4R1'
 }
 
+const profileFactory = (userData, profileData, firebase) => {
+  const { firstName, lastName, email, admin, profession, resume } = profileData
+  const initials = `${firstName[0]}${lastName[0]}`
+  return {
+    email,
+    firstName,
+    lastName,
+    admin,
+    profession,
+    resume,
+    initials
+  }
+}
+
 export const rrfConfig = {
   userProfile: 'users',
   useFirestoreForProfile: true,
-  enableLogging: false
+  enableLogging: false,
+  profileFactory
 }
 
 export default { firebase, rrfConfig }

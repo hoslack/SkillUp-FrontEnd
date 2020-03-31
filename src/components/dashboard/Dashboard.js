@@ -2,7 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Notifications } from './index'
-import { ResumeList } from '../resumes'
+import ResumeList from '../resumes/ResumeList'
 
 const Dashboard = () => {
   const resumes = useSelector(state => state.resume.resumes)

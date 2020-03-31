@@ -20,16 +20,11 @@ const PrivateLinks = () => {
       </Menu.Item>
 
       <Menu.Item key="3">
-        <a onClick={() => dispatch(signOut())} href="#">
+        <button style={{ all: 'unset' }} onClick={() => dispatch(signOut())}>
           Log Out
-        </a>
+        </button>
       </Menu.Item>
-
-      <Menu.Item key="4">
-        <NavLink className="" to="/">
-          HO
-        </NavLink>
-      </Menu.Item>
+      <Menu.Item key="4">HO</Menu.Item>
     </Menu>
   )
 }
