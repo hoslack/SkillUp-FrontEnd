@@ -34,6 +34,7 @@ export const signIn = ({ email, password }) => {
       .login({ email, password })
       .then(() => {
         dispatch({ type: getTypes.LOGIN_SUCCESS, payload: {} })
+        history.push('/dashboard')
       })
       .catch(err => {
         dispatch({ type: getTypes.LOGIN_ERROR, payload: err })
