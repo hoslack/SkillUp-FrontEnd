@@ -1,10 +1,13 @@
 import React, { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 import { UploadOutlined } from '@ant-design/icons'
-import { Button } from 'antd'
+import { Button, Alert } from 'antd'
 import prettyBytes from 'pretty-bytes'
 import PDFViewer from 'pdf-viewer-reactjs'
+import { getBase64 } from '../../utils/helpers'
+import { uploadResume } from '../../store/actions/resumeActions'
+import Loader from '../common/Loader'
 
 const baseStyle = {
   flex: 1,
@@ -41,11 +44,10 @@ const uploadStyle = {
   paddingTop: '20px'
 }
 
-const Resume = props => {
+const Resume = () => {
+  const dispatch = useDispatch()
   const [uploadError, setUploadError] = useState('')
-  const state = useSelector(state => state)
   const profile = useSelector(state => state.firebase.profile)
-  console.log(state)
   const {
     acceptedFiles,
     getRootProps,
@@ -69,58 +71,33 @@ const Resume = props => {
       Array.isArray(acceptedFiles) &&
       acceptedFiles.length > 0 &&
       acceptedFiles[0]
-    console.log(file)
-    const firebase = props.firebase
-    if (file) {
-      const storageRef = firebase.storage().ref()
-      const uploadTask = storageRef.child('resumes/' + file.name).put(file, {})
+    getBase64(file)
+      .then(result => {
+        dispatch(uploadResume(result.split(',')[1]))
+        console.log(result.split(',')[1])
+      })
+      .catch(err => {
+        setUploadError(err)
+      })
+  }
 
-      uploadTask.on(
-        'state_changed',
-        snapshot => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          console.log('Upload is ' + progress + '% done')
-          switch (snapshot.state) {
-            case firebase.storage.TaskState.PAUSED:
-              console.log('Upload is paused')
-              break
-            case firebase.storage.TaskState.RUNNING:
-              console.log('Upload is running')
-              break
-          }
-        },
-        error => {
-          switch (error.code) {
-            case 'storage/unauthorized':
-              setUploadError('You do not have permission to Upload the File')
-              break
-            case 'storage/canceled':
-              setUploadError('Upload Cancelled')
-              break
-            case 'storage/unauthenticated':
-              setUploadError('Please log in and try again')
-              break
-            case 'storage/unknown':
-              setUploadError(
-                'An Internal Error Occurred, Please Contact Support'
-              )
-              break
-          }
-        },
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-            console.log('File available at', downloadURL)
-          })
-        }
-      )
-    }
+  if (profile.isEmpty) {
+    return <Loader />
   }
 
   return (
     <div className="vh-100">
       {profile && !profile.resume && (
         <section>
+          {uploadError && (
+            <Alert
+              style={{ marginBottom: '20px' }}
+              message="Error"
+              description={uploadError}
+              type="error"
+              showIcon
+            />
+          )}
           <div {...getRootProps({ style })}>
             <input {...getInputProps()} />
             <p>

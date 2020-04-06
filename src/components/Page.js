@@ -15,7 +15,6 @@ const { Content } = Layout
 const Page = props => {
   const auth = useSelector(state => state.firebase.auth)
   const firebase = props.firebase
-  console.log(history)
   return (
     <Router history={history}>
       {auth.uid ? (

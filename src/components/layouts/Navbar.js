@@ -8,7 +8,6 @@ import Logo from '../../utils/icons/logo.png'
 
 const Navbar = () => {
   const auth = useSelector(state => state.firebase.auth)
-  const authIsLoaded = auth && auth.isLoaded
   const links = auth.uid ? <PrivateLinks /> : <PublicLinks />
   const { Header } = Layout
 
@@ -19,7 +18,7 @@ const Navbar = () => {
       <Link className="brand-logo" to="/">
         <img className="logo" src={Logo} alt="Home" />
       </Link>
-      {authIsLoaded && links}
+      {auth.isLoaded && links}
     </Header>
   )
 }

@@ -1,6 +1,12 @@
-import types from '../types'
 import history from '../../history'
-const getTypes = types()
+import {
+  SIGNUP_ERROR,
+  SIGNUP_SUCCESS,
+  LOGOUT_SUCCESS,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGOUT_ERROR
+} from '../types'
 
 export const signUp = ({ firstName, lastName, username, email, password }) => {
   return (dispatch, getState, { getFirebase }) => {
@@ -19,10 +25,10 @@ export const signUp = ({ firstName, lastName, username, email, password }) => {
         }
       )
       .then(() => {
-        dispatch({ type: getTypes.SIGNUP_SUCCESS, payload: {} })
+        dispatch({ type: SIGNUP_SUCCESS, payload: {} })
       })
       .catch(error => {
-        dispatch({ type: getTypes.SIGNUP_ERROR, payload: error })
+        dispatch({ type: SIGNUP_ERROR, payload: error })
       })
   }
 }
@@ -33,11 +39,11 @@ export const signIn = ({ email, password }) => {
     firebase
       .login({ email, password })
       .then(() => {
-        dispatch({ type: getTypes.LOGIN_SUCCESS, payload: {} })
+        dispatch({ type: LOGIN_SUCCESS, payload: {} })
         history.push('/dashboard')
       })
       .catch(err => {
-        dispatch({ type: getTypes.LOGIN_ERROR, payload: err })
+        dispatch({ type: LOGIN_ERROR, payload: err })
       })
   }
 }
@@ -48,11 +54,11 @@ export const signOut = () => {
     firebase
       .logout()
       .then(() => {
-        dispatch({ type: getTypes.LOGOUT_SUCCESS, payload: {} })
+        dispatch({ type: LOGOUT_SUCCESS, payload: {} })
         history.push('/')
       })
       .catch(() => {
-        dispatch({ type: getTypes.LOGOUT_ERROR })
+        dispatch({ type: LOGOUT_ERROR })
       })
   }
 }

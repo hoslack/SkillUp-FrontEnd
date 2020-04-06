@@ -5,8 +5,6 @@ import ResumeList from '../resumes/ResumeList'
 
 const Dashboard = () => {
   const resumes = useSelector(state => state.resume.resumes)
-  const auth = useSelector(state => state.firebase.auth)
-
   return (
     <div className="vh-100">
       <div className="">
