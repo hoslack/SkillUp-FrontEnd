@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
 import { Menu, Modal } from 'antd'
 import Signin from '../auth/Signin'
 import Signup from '../auth/Signup'
@@ -20,9 +19,6 @@ const PublicLinks = () => {
         theme="dark"
         mode="horizontal"
         style={{ lineHeight: '64px', float: 'right' }}>
-        <Menu.Item key="0">
-          <NavLink to="/">Home</NavLink>
-        </Menu.Item>
         <Menu.Item key="1">
           <button
             onClick={e => handleClick(e, 'Sign In')}

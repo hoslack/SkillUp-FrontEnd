@@ -5,6 +5,7 @@ import {
   NotificationOutlined,
   UserOutlined
 } from '@ant-design/icons'
+import { NavLink } from 'react-router-dom'
 
 const { SubMenu } = Menu
 const { Sider } = Layout
@@ -23,55 +24,46 @@ const SideBar = () => {
       }}>
       <Menu
         mode="inline"
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
+        defaultSelectedKeys={['dashboard']}
+        defaultOpenKeys={['dashboard-items']}
         style={{ minHeight: '100vh', borderRight: 0 }}>
         <SubMenu
-          key="sub1"
-          title={
-            <span>
-              <UserOutlined />
-              subnav 1
-            </span>
-          }>
-          <Menu.Item key="1">option1</Menu.Item>
-          <Menu.Item key="2">option2</Menu.Item>
-          <Menu.Item key="3">option3</Menu.Item>
-          <Menu.Item key="4">option4</Menu.Item>
-        </SubMenu>
-        <SubMenu
-          key="sub2"
+          key="dashboard-items"
           title={
             <span>
               <LaptopOutlined />
-              subnav 2
+              Dashboard
             </span>
           }>
-          <Menu.Item key="5">option5</Menu.Item>
-          <Menu.Item key="6">option6</Menu.Item>
-          <Menu.Item key="7">option7</Menu.Item>
-          <Menu.Item key="8">option8</Menu.Item>
-          <Menu.Item key="5">option5</Menu.Item>
-          <Menu.Item key="6">option6</Menu.Item>
-          <Menu.Item key="7">option7</Menu.Item>
-          <Menu.Item key="8">option8</Menu.Item>
-          <Menu.Item key="5">option5</Menu.Item>
-          <Menu.Item key="6">option6</Menu.Item>
-          <Menu.Item key="7">option7</Menu.Item>
-          <Menu.Item key="8">option8</Menu.Item>
+          <Menu.Item key="dashboard">
+            <NavLink to="/dashboard">Dashboard</NavLink>
+          </Menu.Item>
+        </SubMenu>
+        <SubMenu
+          key="profile"
+          title={
+            <span>
+              <UserOutlined />
+              Profile
+            </span>
+          }>
+          <Menu.Item key="my-resume">
+            <NavLink to="/resume">My Resume</NavLink>
+          </Menu.Item>
+          <Menu.Item key="personal-details">Personal Details</Menu.Item>
         </SubMenu>
         <SubMenu
           key="sub3"
           title={
             <span>
               <NotificationOutlined />
-              subnav 3
+              Notifications
             </span>
           }>
-          <Menu.Item key="9">option9</Menu.Item>
-          <Menu.Item key="10">option10</Menu.Item>
-          <Menu.Item key="11">option11</Menu.Item>
-          <Menu.Item key="12">option12</Menu.Item>
+          <Menu.Item key="4">option9</Menu.Item>
+          <Menu.Item key="5">option10</Menu.Item>
+          <Menu.Item key="6">option11</Menu.Item>
+          <Menu.Item key="7">option12</Menu.Item>
         </SubMenu>
       </Menu>
     </Sider>
