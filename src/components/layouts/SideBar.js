@@ -24,11 +24,23 @@ const SideBar = () => {
       }}>
       <Menu
         mode="inline"
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
+        defaultSelectedKeys={['dashboard']}
+        defaultOpenKeys={['dashboard-items']}
         style={{ minHeight: '100vh', borderRight: 0 }}>
         <SubMenu
-          key="sub1"
+          key="dashboard-items"
+          title={
+            <span>
+              <LaptopOutlined />
+              Dashboard
+            </span>
+          }>
+          <Menu.Item key="dashboard">
+            <NavLink to="/dashboard">Dashboard</NavLink>
+          </Menu.Item>
+        </SubMenu>
+        <SubMenu
+          key="profile"
           title={
             <span>
               <UserOutlined />
@@ -39,17 +51,6 @@ const SideBar = () => {
             <NavLink to="/resume">My Resume</NavLink>
           </Menu.Item>
           <Menu.Item key="personal-details">Personal Details</Menu.Item>
-        </SubMenu>
-        <SubMenu
-          key="sub2"
-          title={
-            <span>
-              <LaptopOutlined />
-              subnav 2
-            </span>
-          }>
-          <Menu.Item key="2">option5</Menu.Item>
-          <Menu.Item key="3">option6</Menu.Item>
         </SubMenu>
         <SubMenu
           key="sub3"

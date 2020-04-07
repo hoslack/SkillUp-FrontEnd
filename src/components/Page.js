@@ -8,16 +8,17 @@ import SideBar from './layouts/SideBar'
 import Home from './Home'
 import Dashboard from './dashboard/Dashboard'
 import Resume from './resumes/Resume'
-import history from '../history'
+import history from '../utils/history'
 
 const { Content } = Layout
 
 const Page = props => {
-  const auth = useSelector(state => state.firebase.auth)
+  const profile = useSelector(state => state.firebase.profile)
   const firebase = props.firebase
+  // console.log(history)
   return (
     <Router history={history}>
-      {auth.uid ? (
+      {!profile.isEmpty ? (
         <Layout>
           <Navbar />
           <Layout>

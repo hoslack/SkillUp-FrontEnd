@@ -1,7 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Button, Alert } from 'antd'
+import { Form, Input, Button, Alert, Select } from 'antd'
 import { signUp } from '../../store/actions'
+import professions from '../../utils/professions'
 
 const layout = {
   labelCol: {
@@ -17,12 +18,23 @@ const tailLayout = {
     span: 16
   }
 }
+const { Option } = Select
+
 const Signup = () => {
   const dispatch = useDispatch()
   const auth = useSelector(state => state.auth)
   const authError = auth.authError
-  const onFinish = ({ firstName, lastName, username, email, password }) => {
-    dispatch(signUp({ firstName, lastName, username, email, password }))
+  const onFinish = ({
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+    profession
+  }) => {
+    dispatch(
+      signUp({ firstName, lastName, username, email, password, profession })
+    )
   }
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)
@@ -41,7 +53,7 @@ const Signup = () => {
       )}
       <Form
         {...layout}
-        style={{ paddingRight: '20%' }}
+        style={{ paddingRight: '10%' }}
         name="basic"
         initialValues={{}}
         onFinish={onFinish}
@@ -92,6 +104,19 @@ const Signup = () => {
             }
           ]}>
           <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="profession"
+          label="Profession"
+          rules={[{ required: true }]}>
+          <Select placeholder="Select your professional" allowClear>
+            {professions.map(profession => (
+              <Option key={profession} value={profession}>
+                {profession}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item

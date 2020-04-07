@@ -8,7 +8,7 @@ const PrivateLinks = () => {
   const profile = useSelector(state => state.firebase.profile)
   return (
     <div>
-      {profile.isLoaded && (
+      {!profile.isEmpty && (
         <Menu
           theme="dark"
           mode="horizontal"
@@ -20,7 +20,7 @@ const PrivateLinks = () => {
           <Menu.Item disabled key="1">
             <Tooltip title={profile.firstName.toUpperCase()}>
               <Button type="primary" shape="circle">
-                {profile.initials.toUpperCase()}
+                {profile.initials}
               </Button>
             </Tooltip>
           </Menu.Item>

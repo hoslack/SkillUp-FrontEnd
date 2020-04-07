@@ -11,7 +11,7 @@ export const firebase = {
 
 const profileFactory = (userData, profileData, firebase) => {
   const { firstName, lastName, email, admin, profession, resume } = profileData
-  const initials = `${firstName[0]}${lastName[0]}`
+  const initials = `${firstName[0]}${lastName[0]}`.toUpperCase()
   return {
     email,
     firstName,

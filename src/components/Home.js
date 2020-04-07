@@ -1,7 +1,13 @@
 import React from 'react'
 import Navbar from './layouts/Navbar'
+import { useSelector } from 'react-redux'
+import history from '../utils/history'
 
 function Home() {
+  const auth = useSelector(state => state.firebase.auth)
+  if (!auth.isEmpty) {
+    history.push('/dashboard', {})
+  }
   return (
     <div className="vh-100">
       <header className="sans-serif">

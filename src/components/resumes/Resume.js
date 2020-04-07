@@ -74,7 +74,6 @@ const Resume = () => {
     getBase64(file)
       .then(result => {
         dispatch(uploadResume(result.split(',')[1]))
-        console.log(result.split(',')[1])
       })
       .catch(err => {
         setUploadError(err)
