@@ -116,21 +116,20 @@ const Dashboard = () => {
       title: 'Reviewer?',
       dataIndex: 'admin',
       key: 'admin',
-      // render: text => <span>{text}</span>,
       ...getColumnSearchProps('admin')
     },
     {
       title: 'Resume',
-      dataIndex: 'uid',
-      key: 'resume',
-      render: () => <button>Open Resume</button>
+      dataIndex: 'id',
+      key: 'id',
+      render: text => <a href={`/review/${text}`}>Open Resume</a>
     }
   ]
 
   return (
     <div className="vh-100">
       <Table
-        rowKey={record => record.uid}
+        rowKey={record => record.id}
         columns={columns}
         dataSource={users || []}
         pagination={{ position: ['', 'bottomCenter'], simple: true }}

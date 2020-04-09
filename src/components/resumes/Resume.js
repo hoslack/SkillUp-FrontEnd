@@ -123,6 +123,7 @@ const Resume = () => {
           {profile && profile.resume && (
             <PDFViewer
               css={{ padding: '1px', width: '300px' }}
+              hideNavbar
               canvasCss={{}}
               navbarOnTop
               hideRotation

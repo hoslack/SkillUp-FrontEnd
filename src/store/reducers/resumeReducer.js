@@ -1,12 +1,13 @@
-import { CREATE_RESUME_SUCCESS, CREATE_RESUME_ERROR } from '../types'
+import {
+  CREATE_RESUME_SUCCESS,
+  CREATE_RESUME_ERROR,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_ERROR
+} from '../types'
 
 const initialState = {
-  resumes: [
-    { id: 1, title: 'First Title', description: 'First Desc' },
-    { id: 2, title: 'Second Title', description: 'Second Desc' },
-    { id: 3, title: 'Third Title', description: 'Third Desc' }
-  ],
-  resumeError: null
+  resumeError: null,
+  reviewError: null
 }
 
 const resumeReducer = (state = initialState, action) => {
@@ -20,6 +21,15 @@ const resumeReducer = (state = initialState, action) => {
       return {
         ...state,
         resumeError: 'The Resume could not be uploaded'
+      }
+    case CREATE_REVIEW_SUCCESS:
+      return {
+        ...state
+      }
+    case CREATE_REVIEW_ERROR:
+      return {
+        ...state,
+        reviewError: 'The Review could not be added'
       }
   }
   return state
