@@ -1,11 +1,8 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { useFirestoreConnect } from 'react-redux-firebase'
 
 const Tags = () => {
-  useFirestoreConnect('tags')
-  const tags = useSelector(state => state.firestore.ordered.tags)
-  console.log(tags)
+  // const profile = useSelector(state => state.firebase.profile)
+  // const uid = !profile.isEmpty && profile.uid
 
   return <div>Tags</div>
 }

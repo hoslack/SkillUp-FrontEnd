@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import PrivateLinks from './PrivateLinks'
 import PublicLinks from './PublicLinks'

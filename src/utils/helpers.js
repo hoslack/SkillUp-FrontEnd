@@ -20,6 +20,9 @@ export const alterUsers = (users = []) =>
 export const selectReviews = (reviews = [], uid) =>
   reviews.filter(review => review.userId === uid)
 
+export const selectTags = (tags = [], uid) =>
+  tags.filter(tag => tag.recipient === uid)
+
 export const getLocation = () => {
   const profileLocations = ['resume', 'details']
   const dashboardLocations = ['dashboard', 'tags']

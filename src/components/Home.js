@@ -43,7 +43,7 @@ function Home() {
               <span className="dib v-mid ph3 white-70 mb3">or</span>
               <a
                 className="f6 no-underline grow dib v-mid white ba b--white ph3 pv2 mb3"
-                href="">
+                href="/">
                 Learn More About Skill App
               </a>
             </div>

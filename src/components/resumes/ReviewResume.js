@@ -16,6 +16,7 @@ import {
 import Loader from '../common/Loader'
 import { createReview } from '../../store/actions/resumeActions'
 import Reviews from './Reviews'
+import AddTag from './AddTag'
 
 const ReviewResume = ({ match: { params } }) => {
   const auth = useSelector(state => state.firebase.auth)
@@ -64,9 +65,8 @@ const ReviewResume = ({ match: { params } }) => {
             onBack={() => window.history.back()}
             title={userData.firstName}
             subTitle={userData.lastName}
-            extra={
-              !profile.isEmpty &&
-              profile.admin && [
+            extra={[
+              !profile.isEmpty && profile.admin && (
                 <Button
                   key="1"
                   type="primary"
@@ -75,8 +75,9 @@ const ReviewResume = ({ match: { params } }) => {
                   }}>
                   Add Review
                 </Button>
-              ]
-            }>
+              ),
+              <AddTag key="2" uid={uid} admin={userData && userData.admin} />
+            ]}>
             <Descriptions size="small" column={2}>
               <Descriptions.Item label="Profession">
                 {userData.profession}

@@ -15,7 +15,7 @@ const Reviews = ({ uid }) => {
     <Card title="Reviews" style={{ width: 300 }}>
       {reviews &&
         reviews.length > 0 &&
-        reviews.map(review => <p key={review.userId}>{review.content}</p>)}
+        reviews.map(review => <p key={review.id}>{review.content}</p>)}
     </Card>
   )
 }
