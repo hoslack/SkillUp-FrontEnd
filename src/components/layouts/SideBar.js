@@ -1,16 +1,19 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import {
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined
 } from '@ant-design/icons'
-import { NavLink } from 'react-router-dom'
+import { getLocation } from '../../utils/helpers'
 
 const { SubMenu } = Menu
 const { Sider } = Layout
 
 const SideBar = () => {
+  const location = getLocation()
+
   return (
     <Sider
       width={200}
@@ -24,8 +27,8 @@ const SideBar = () => {
       }}>
       <Menu
         mode="inline"
-        defaultSelectedKeys={['dashboard']}
-        defaultOpenKeys={['dashboard-items']}
+        defaultSelectedKeys={[location.openKey]}
+        defaultOpenKeys={[`${location.selectedKey}-items`]}
         style={{ minHeight: '100vh', borderRight: 0 }}>
         <SubMenu
           key="dashboard-items"
@@ -38,22 +41,25 @@ const SideBar = () => {
           <Menu.Item key="dashboard">
             <NavLink to="/dashboard">Dashboard</NavLink>
           </Menu.Item>
+          <Menu.Item key="tags">
+            <NavLink to="/tags">Tags</NavLink>
+          </Menu.Item>
         </SubMenu>
         <SubMenu
-          key="profile"
+          key="profile-items"
           title={
             <span>
               <UserOutlined />
               Profile
             </span>
           }>
-          <Menu.Item key="my-resume">
+          <Menu.Item key="resume">
             <NavLink to="/resume">My Resume</NavLink>
           </Menu.Item>
           <Menu.Item key="personal-details">Personal Details</Menu.Item>
         </SubMenu>
         <SubMenu
-          key="sub3"
+          key="notification-items"
           title={
             <span>
               <NotificationOutlined />

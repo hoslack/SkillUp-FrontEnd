@@ -2,12 +2,13 @@ import React, { useMemo, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 import { UploadOutlined } from '@ant-design/icons'
-import { Button, Alert } from 'antd'
+import { Button, Alert, Col, Row } from 'antd'
 import prettyBytes from 'pretty-bytes'
 import PDFViewer from 'pdf-viewer-reactjs'
 import { getBase64 } from '../../utils/helpers'
 import { uploadResume } from '../../store/actions/resumeActions'
 import Loader from '../common/Loader'
+import Reviews from './Reviews'
 
 const baseStyle = {
   flex: 1,
@@ -118,27 +119,32 @@ const Resume = () => {
         </section>
       )}
 
-      <div>
-        <div className="fl w-70">
-          {profile && profile.resume && (
-            <PDFViewer
-              css={{ padding: '1px', width: '300px' }}
-              hideNavbar
-              canvasCss={{}}
-              navbarOnTop
-              hideRotation
-              page={1}
-              scale={1.4}
-              scaleStep={0.1}
-              maxScale={1.5}
-              minScale={1}
-              document={{
-                base64: profile.resume
-              }}
-            />
-          )}
-        </div>
-      </div>
+      <Row>
+        <Col span={18}>
+          <div className="fl w-70">
+            {profile && profile.resume && (
+              <PDFViewer
+                css={{ padding: '1px', width: '300px' }}
+                hideNavbar
+                canvasCss={{}}
+                navbarOnTop
+                hideRotation
+                page={1}
+                scale={1.4}
+                scaleStep={0.1}
+                maxScale={1.5}
+                minScale={1}
+                document={{
+                  base64: profile.resume
+                }}
+              />
+            )}
+          </div>
+        </Col>
+        <Col span={6}>
+          <Reviews uid={profile.id} />
+        </Col>
+      </Row>
     </div>
   )
 }

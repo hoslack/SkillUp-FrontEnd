@@ -4,10 +4,11 @@ import { useFirestoreConnect } from 'react-redux-firebase'
 import { Table, Input, Button } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import Highlighter from 'react-highlight-words'
+import { alterUsers } from '../../utils/helpers'
 
 const Dashboard = () => {
-  useFirestoreConnect([{ collection: 'users' }])
-  const users = useSelector(state => state.firestore.ordered.users)
+  useFirestoreConnect('users')
+  const users = alterUsers(useSelector(state => state.firestore.ordered.users))
   const [searchText, setSearch] = useState('')
   const [searchedColumn, setColumn] = useState('')
   let searchInput = ''
@@ -113,10 +114,10 @@ const Dashboard = () => {
       ...getColumnSearchProps('profession')
     },
     {
-      title: 'Reviewer?',
-      dataIndex: 'admin',
-      key: 'admin',
-      ...getColumnSearchProps('admin')
+      title: 'Role',
+      dataIndex: 'role',
+      key: 'role',
+      ...getColumnSearchProps('role')
     },
     {
       title: 'Resume',

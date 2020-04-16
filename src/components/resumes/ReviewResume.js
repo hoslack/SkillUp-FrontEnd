@@ -7,7 +7,6 @@ import {
   Row,
   Col,
   Descriptions,
-  Card,
   Button,
   Modal,
   Input,
@@ -16,6 +15,7 @@ import {
 } from 'antd'
 import Loader from '../common/Loader'
 import { createReview } from '../../store/actions/resumeActions'
+import Reviews from './Reviews'
 
 const ReviewResume = ({ match: { params } }) => {
   const auth = useSelector(state => state.firebase.auth)
@@ -35,6 +35,9 @@ const ReviewResume = ({ match: { params } }) => {
       .then(result => {
         setUserData(result.data())
       })
+      .catch(error =>
+        console.log('There was and error fetching The resume', error)
+      )
   }, [db, uid])
 
   const handleSubmitReview = ({ review }) => {
@@ -64,7 +67,12 @@ const ReviewResume = ({ match: { params } }) => {
             extra={
               !profile.isEmpty &&
               profile.admin && [
-                <Button key="1" type="primary" onClick={() => setVisible(true)}>
+                <Button
+                  key="1"
+                  type="primary"
+                  onClick={() => {
+                    setVisible(true)
+                  }}>
                   Add Review
                 </Button>
               ]
@@ -97,10 +105,7 @@ const ReviewResume = ({ match: { params } }) => {
             </Col>
 
             <Col span={6}>
-              <Card title="Card" style={{ width: 300 }}>
-                <p>Card content</p>
-                <p>Card content</p>
-              </Card>
+              <Reviews uid={uid} />
             </Col>
           </Row>
           <Modal

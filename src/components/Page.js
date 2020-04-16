@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import Navbar from './layouts/Navbar'
 import SideBar from './layouts/SideBar'
 import Home from './Home'
-import Dashboard from './dashboard/Dashboard'
+import { Dashboard, Tags } from './dashboard'
 import Resume from './resumes/Resume'
 import ReviewResume from './resumes/ReviewResume'
 import history from '../utils/history'
@@ -28,6 +28,7 @@ const Page = props => {
               style={{ marginLeft: 200 }}>
               <Switch>
                 <Route exact component={Dashboard} path="/dashboard" />
+                <Route exact component={Tags} path="/tags" />
                 <Route exact component={ReviewResume} path="/review/:uid" />
                 <Route
                   exact
