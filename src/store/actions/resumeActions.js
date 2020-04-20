@@ -42,7 +42,7 @@ export const createReview = ({ content, authorId, userId }) => (
     })
 }
 
-export const createTag = (sender, recipient, name, type) => (
+export const createTag = (sender, recipient, name, type, url = '') => (
   dispatch,
   getState,
   { getFirebase }
@@ -55,7 +55,8 @@ export const createTag = (sender, recipient, name, type) => (
       recipient,
       name,
       type,
-      viewed: false
+      viewed: false,
+      url
     })
     .then(() => {
       dispatch({ type: CREATE_TAG_SUCCESS, payload: {} })

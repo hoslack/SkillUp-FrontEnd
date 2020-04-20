@@ -17,6 +17,7 @@ import Loader from '../common/Loader'
 import { createReview } from '../../store/actions/resumeActions'
 import Reviews from './Reviews'
 import AddTag from './AddTag'
+import Jobs from './Jobs'
 
 const ReviewResume = ({ match: { params } }) => {
   const auth = useSelector(state => state.firebase.auth)
@@ -26,6 +27,7 @@ const ReviewResume = ({ match: { params } }) => {
   const dispatch = useDispatch()
   const [userData, setUserData] = useState({})
   const [visible, setVisible] = useState(false)
+  const [jobsVisible, setJobsVisible] = useState(false)
   const [reviewSuccess, setReviewSuccess] = useState(false)
   const uid = params.uid || ''
 
@@ -57,6 +59,15 @@ const ReviewResume = ({ match: { params } }) => {
 
   return (
     <div className="">
+      <Modal
+        width="70%"
+        footer={false}
+        title="Available Jobs"
+        okText="Done"
+        visible={jobsVisible}
+        onCancel={() => setJobsVisible(false)}>
+        <Jobs />
+      </Modal>
       {userData && userData.resume ? (
         <div>
           <PageHeader
@@ -76,7 +87,17 @@ const ReviewResume = ({ match: { params } }) => {
                   Add Review
                 </Button>
               ),
-              <AddTag key="2" uid={uid} admin={userData && userData.admin} />
+              !profile.isEmpty && profile.admin && (
+                <Button
+                  key="2"
+                  type="primary"
+                  onClick={() => {
+                    setJobsVisible(true)
+                  }}>
+                  View Jobs
+                </Button>
+              ),
+              <AddTag key="3" uid={uid} admin={userData && userData.admin} />
             ]}>
             <Descriptions size="small" column={2}>
               <Descriptions.Item label="Profession">

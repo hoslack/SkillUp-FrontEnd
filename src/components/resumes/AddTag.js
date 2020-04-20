@@ -14,6 +14,7 @@ const AddTag = ({ uid, admin }) => {
   const profile = useSelector(state => state.firebase.profile)
   const authId = !auth.isEmpty && auth.uid
   const name = !profile.isEmpty && profile.firstName
+  const resumePresent = !!profile.resume
 
   useEffect(() => {
     const tagsArray = []
@@ -41,7 +42,7 @@ const AddTag = ({ uid, admin }) => {
     }, 3000)
   }
 
-  return !auth.isEmpty && !auth.admin && admin ? (
+  return !auth.isEmpty && !auth.admin && admin && resumePresent ? (
     <Button
       loading={loading}
       disabled={tagAdded}
