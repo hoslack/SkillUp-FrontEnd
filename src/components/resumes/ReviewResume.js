@@ -66,7 +66,7 @@ const ReviewResume = ({ match: { params } }) => {
         okText="Done"
         visible={jobsVisible}
         onCancel={() => setJobsVisible(false)}>
-        <Jobs />
+        <Jobs profession={userData.profession} />
       </Modal>
       {userData && userData.resume ? (
         <div>
