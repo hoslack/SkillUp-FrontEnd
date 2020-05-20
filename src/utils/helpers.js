@@ -25,7 +25,7 @@ export const selectTags = (tags = [], uid) =>
 
 export const getLocation = () => {
   const profileLocations = ['resume', 'details']
-  const dashboardLocations = ['dashboard', 'tags']
+  const dashboardLocations = ['dashboard', 'tags', 'payment']
   const location = history.location.pathname.split('/')[1]
   if (profileLocations.includes(location)) {
     return { selectedKey: 'profile', openKey: location }
