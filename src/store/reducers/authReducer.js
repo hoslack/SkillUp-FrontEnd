@@ -3,11 +3,14 @@ import {
   SIGNUP_SUCCESS,
   LOGIN_ERROR,
   LOGOUT_SUCCESS,
-  SIGNUP_ERROR
+  SIGNUP_ERROR,
+  CREATE_SUBSCRIPTION_SUCCESS,
+  CREATE_SUBSCRIPTION_ERROR
 } from '../types'
 
 const initialState = {
-  authError: null
+  authError: null,
+  subscriptionError: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -35,6 +38,15 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         authError: action.payload.message
+      }
+    case CREATE_SUBSCRIPTION_SUCCESS:
+      return {
+        ...state
+      }
+    case CREATE_SUBSCRIPTION_ERROR:
+      return {
+        ...state,
+        subscriptionError: action.payload.message
       }
     default:
       return state

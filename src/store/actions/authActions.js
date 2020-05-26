@@ -5,7 +5,9 @@ import {
   LOGOUT_SUCCESS,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
-  LOGOUT_ERROR
+  LOGOUT_ERROR,
+  CREATE_SUBSCRIPTION_SUCCESS,
+  CREATE_SUBSCRIPTION_ERROR
 } from '../types'
 
 export const signUp = ({
@@ -28,7 +30,8 @@ export const signUp = ({
           lastName,
           profession,
           resume: '',
-          admin: false
+          admin: false,
+          subscription: ''
         }
       )
       .then(() => {
@@ -71,3 +74,20 @@ export const signOut = () => {
   }
 }
 
+export const updateSubscription = () => {
+  return (dispatch, getState, { getFirebase }) => {
+    const now = new Date()
+    now.setFullYear(now.getFullYear() + 1)
+    const firebase = getFirebase()
+    firebase
+      .updateProfile({
+        subscription: now.toDateString()
+      })
+      .then(() => {
+        dispatch({ type: CREATE_SUBSCRIPTION_SUCCESS, payload: {} })
+      })
+      .catch(error => {
+        dispatch({ type: CREATE_SUBSCRIPTION_ERROR, payload: error })
+      })
+  }
+}
