@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useFirebase } from 'react-redux-firebase'
 import { useDropzone } from 'react-dropzone'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Alert, Col, Row } from 'antd'
 import prettyBytes from 'pretty-bytes'
 import PDFViewer from 'pdf-viewer-reactjs'
 import { getBase64 } from '../../utils/helpers'
-import { uploadResume } from '../../store/actions/resumeActions'
 import Loader from '../common/Loader'
 import Reviews from './Reviews'
 
@@ -46,7 +46,7 @@ const uploadStyle = {
 }
 
 const Resume = () => {
-  const dispatch = useDispatch()
+  const firebase = useFirebase()
   const [uploadError, setUploadError] = useState('')
   const profile = useSelector(state => state.firebase.profile)
   const {
@@ -74,7 +74,7 @@ const Resume = () => {
       acceptedFiles[0]
     getBase64(file)
       .then(result => {
-        dispatch(uploadResume(result.split(',')[1]))
+        firebase.updateProfile({ resume: result.split(',')[1] })
       })
       .catch(err => {
         setUploadError(err)
@@ -142,7 +142,7 @@ const Resume = () => {
           </div>
         </Col>
         <Col span={6}>
-          <Reviews uid={profile.id} />
+          {profile && profile.resume && <Reviews uid={profile.id} />}
         </Col>
       </Row>
     </div>

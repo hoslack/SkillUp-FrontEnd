@@ -1,7 +1,8 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Button, Alert } from 'antd'
-import { signIn } from '../../store/actions/authActions'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Form, Input, Button, Alert, message } from 'antd'
+import { useFirebase } from 'react-redux-firebase'
+import history from '../../utils/history'
 
 const layout = {
   labelCol: {
@@ -19,12 +20,21 @@ const tailLayout = {
 }
 
 const Signin = () => {
+  const firebase = useFirebase()
   const auth = useSelector(state => state.auth)
   const authError = auth.authError
-  const dispatch = useDispatch()
+  const [error, setError] = useState('')
 
   const onFinish = ({ email, password }) => {
-    dispatch(signIn({ email, password }))
+    return firebase
+      .login({ email, password })
+      .then(data => {
+        message.success(`Sign In was successful, welcome`)
+      })
+      .catch(error => {
+        setError(error.message)
+        message.error(`${error.message}`)
+      })
   }
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)

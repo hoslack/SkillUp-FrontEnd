@@ -5,19 +5,26 @@ import { Card } from 'antd'
 import { selectReviews } from '../../utils/helpers'
 
 const Reviews = ({ uid }) => {
-  useFirestoreConnect('reviews')
+  const reviewsQuery = { collection: 'reviews', orderBy: 'timestamp' }
+  useFirestoreConnect(() => [reviewsQuery])
   const reviews = selectReviews(
-    useSelector(state => state.firestore.ordered.reviews),
+    useSelector(({ firestore: { ordered } }) => ordered.reviews) || [],
     uid
   )
 
-  return (
-    <Card title="Reviews" style={{ width: 300 }}>
-      {reviews &&
-        reviews.length > 0 &&
-        reviews.map(review => <p key={review.id}>{review.content}</p>)}
-    </Card>
-  )
+  if (reviews && reviews.length > 0) {
+    return (
+      <Card title="Reviews" style={{ width: 300 }}>
+        {reviews.map(review => (
+          <p style={{ overflowWrap: 'anywhere' }} key={review.id}>
+            {review.content}
+          </p>
+        ))}
+      </Card>
+    )
+  } else {
+    return ''
+  }
 }
 
 export default Reviews

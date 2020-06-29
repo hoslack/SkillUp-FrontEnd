@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { Table } from 'antd'
+import { useSelector } from 'react-redux'
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
+import { Table, Checkbox, message } from 'antd'
 import axios from 'axios'
 import months from '../../utils/months'
 
-const Jobs = ({ profession }) => {
+const Jobs = ({ profession, uid }) => {
+  const tagQuery = {
+    collection: 'tags'
+  }
+
+  useFirestoreConnect(() => [tagQuery])
+  const firestore = useFirestore()
+
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [jobs, setJobs] = useState([])
+  const auth = useSelector(state => state.firebase.auth)
+  const authId = !auth.isEmpty && auth.uid
 
   useEffect(() => {
     axios
@@ -16,7 +27,7 @@ const Jobs = ({ profession }) => {
       )
       .then(response => {
         setIsLoaded(true)
-        setJobs(response.data.results)
+        setJobs(processJobsData(response.data.results))
       })
       .catch(error => {
         setIsLoaded(true)
@@ -31,6 +42,7 @@ const Jobs = ({ profession }) => {
       const month = months[date.getMonth()]
       const publicationDate = `${date.getDate()}, ${month}, ${date.getFullYear()}`
       return {
+        id: job.id,
         title: job.name,
         company: job.company.name,
         url: job.refs.landing_page,
@@ -38,6 +50,21 @@ const Jobs = ({ profession }) => {
         level: job.levels[0].name || ''
       }
     })
+  }
+
+  const handleAddJob = jobUrl => {
+    firestore
+      .collection('tags')
+      .add({
+        sender: authId,
+        recipient: uid,
+        name: '',
+        type: 'Job',
+        viewed: false,
+        url: jobUrl
+      })
+      .then(() => console.log('Job added successfully'))
+      .catch(error => message.error(`${error.message}`))
   }
 
   const columns = [
@@ -79,6 +106,13 @@ const Jobs = ({ profession }) => {
           View Job
         </a>
       )
+    },
+    {
+      title: '',
+      dataIndex: 'url',
+      key: 'url',
+      width: 50,
+      render: text => <Checkbox onChange={() => handleAddJob(text)} />
     }
   ]
 
@@ -86,7 +120,7 @@ const Jobs = ({ profession }) => {
     <Table
       rowKey={record => record.id}
       columns={columns}
-      dataSource={processJobsData(jobs)}
+      dataSource={jobs}
       pagination={{ position: ['', 'bottomCenter'], simple: true }}
     />
   )

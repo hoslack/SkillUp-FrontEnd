@@ -1,11 +1,23 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { signOut } from '../../store/actions'
-import { Menu, Button, Tooltip } from 'antd'
+import { useSelector } from 'react-redux'
+import { useFirebase } from 'react-redux-firebase'
+import { Menu, Button, Tooltip, message } from 'antd'
+import history from '../../utils/history'
 
 const PrivateLinks = () => {
-  const dispatch = useDispatch()
+  const firebase = useFirebase()
   const profile = useSelector(state => state.firebase.profile)
+
+  const logOut = () => {
+    firebase
+      .logout()
+      .then(() => {
+        history.push('/')
+        return message.success('You have been logged out successfully')
+      })
+      .catch(error => message.error(`${error.message}`))
+  }
+
   return (
     <div>
       {!profile.isEmpty && (
@@ -25,9 +37,7 @@ const PrivateLinks = () => {
             </Tooltip>
           </Menu.Item>
           <Menu.Item key="2">
-            <button
-              style={{ all: 'unset' }}
-              onClick={() => dispatch(signOut())}>
+            <button style={{ all: 'unset' }} onClick={() => logOut()}>
               Log Out
             </button>
           </Menu.Item>
