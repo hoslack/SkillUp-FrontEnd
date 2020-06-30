@@ -7,7 +7,7 @@ import months from '../../utils/months'
 
 const Jobs = ({ profession, uid }) => {
   const tagQuery = {
-    collection: 'tags'
+    collection: 'jobs'
   }
 
   useFirestoreConnect(() => [tagQuery])
@@ -54,14 +54,13 @@ const Jobs = ({ profession, uid }) => {
 
   const handleAddJob = jobUrl => {
     firestore
-      .collection('tags')
+      .collection('jobs')
       .add({
         sender: authId,
         recipient: uid,
-        name: '',
-        type: 'Job',
         viewed: false,
-        url: jobUrl
+        url: jobUrl,
+        timestamp: Date.now()
       })
       .then(() => console.log('Job added successfully'))
       .catch(error => message.error(`${error.message}`))

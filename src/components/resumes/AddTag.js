@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase'
 import { Button, message } from 'antd'
 
-const AddTag = ({ uid, admin }) => {
+const AddTag = ({ uid, admin, reviewerName }) => {
   const tagQuery = {
     collection: 'tags'
   }
@@ -22,15 +22,11 @@ const AddTag = ({ uid, admin }) => {
 
   useEffect(() => {
     tags.map(doc => {
-      if (
-        doc.recipient === uid &&
-        doc.sender === authId &&
-        doc.type === 'Review Request'
-      ) {
+      if (doc.recipient === uid && doc.sender === authId) {
         setTagAdded(true)
       }
     })
-  }, [firestore, authId, uid, tags])
+  }, [authId, uid, tags])
 
   const handleAddTag = () => {
     firestore
@@ -39,9 +35,10 @@ const AddTag = ({ uid, admin }) => {
         sender: authId,
         recipient: uid,
         name,
-        type: 'Review Request',
+        reviewerName,
         viewed: false,
-        url: ''
+        status: 'pending',
+        timestamp: Date.now()
       })
       .then(() => {
         setLoading(true)

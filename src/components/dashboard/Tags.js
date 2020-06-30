@@ -1,57 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { useFirestore } from 'react-redux-firebase'
+import React from 'react'
+import { useFirestoreConnect } from 'react-redux-firebase'
 import { useSelector } from 'react-redux'
-import {Checkbox, Table} from 'antd'
+import { Table, Alert } from 'antd'
 
 const Tags = () => {
-  const [tags, setTags] = useState([])
-  const [jobs, setJobs] = useState([])
-  const db = useFirestore()
-  const auth = useSelector(state => state.firebase.auth)
+  const tagsQuery = {
+    collection: 'tags',
+    orderBy: 'timestamp'
+  }
+
+  useFirestoreConnect(() => [tagsQuery])
+
+  const auth = useSelector(({ firebase: { auth } }) => auth)
+  const profile = useSelector(({ firebase: { profile } }) => profile)
   const authId = !auth.isEmpty && auth.uid
-
-  useEffect(() => {
-    const tagsArray = []
-    db.collection('tags').onSnapshot(
-      snapshot => {
-        snapshot.forEach(doc => {
-          tagsArray.push(doc.data())
-        })
-        setTags(tagsArray)
-      },
-      error => {
-        console.log(error)
-      }
-    )
-  }, [db, authId])
-
-  const jobColumns = [
-    {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
-      ellipsis: true,
-      width: 130
-    },
-    {
-      title: 'Level',
-      dataIndex: 'level',
-      key: 'level',
-      ellipsis: true,
-      width: 70
-    },
-    {
-      title: '',
-      dataIndex: 'url',
-      key: 'url',
-      width: 50,
-      render: text => (
-        <a href={text} target="blank">
-          View Job
-        </a>
-      )
-    }
-  ]
+  const tags = useSelector(({ firestore: { ordered } }) => ordered.tags) || []
 
   const adminTagsColumns = [
     {
@@ -74,39 +37,59 @@ const Tags = () => {
 
   const tagsColumns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
+      title: 'Reviewer',
+      dataIndex: 'reviewerName',
+      key: 'reviewerName'
     },
     {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type'
-    },
-    {
-      title: 'View',
-      dataIndex: 'sender',
-      key: 'sender',
-      render: text => <a href={`/review/${text}`}>Review Resume</a>
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: text => {
+        let type = 'info'
+        if (text === 'accepted') {
+          type = 'success'
+        } else if (text === 'rejected') {
+          type = 'error'
+        }
+        return (
+          <Alert
+            style={{ maxWidth: 'fit-content' }}
+            message={text}
+            type={type}
+          />
+        )
+      }
     }
   ]
 
-  return (
-    <div className="vh-100">
-      <Table
-        rowKey={record => record.id}
-        columns={adminTagsColumns}
-        dataSource={tags || []}
-        pagination={{ position: ['', 'bottomCenter'], simple: true }}
-      />
-      <Table
-        rowKey={record => record.id}
-        columns={adminTagsColumns}
-        dataSource={tags || []}
-        pagination={{ position: ['', 'bottomCenter'], simple: true }}
-      />
-    </div>
-  )
+  if (profile.isLoaded && profile.admin) {
+    const displayedTags = tags.filter(tag => tag.recipient === authId) || []
+    return (
+      <div className="vh-100">
+        <Table
+          rowKey={record => record.id}
+          columns={adminTagsColumns}
+          dataSource={displayedTags.reverse() || []}
+          pagination={{ position: ['', 'bottomCenter'], simple: true }}
+        />
+      </div>
+    )
+  } else if (profile.isLoaded && !profile.admin) {
+    const displayedTags = tags.filter(tag => tag.sender === authId) || []
+    return (
+      <div className="vh-100">
+        <Table
+          rowKey={record => record.id}
+          columns={tagsColumns}
+          dataSource={displayedTags || []}
+          pagination={{ position: ['', 'bottomCenter'], simple: true }}
+        />
+      </div>
+    )
+  } else {
+    return ''
+  }
 }
 
 export default Tags

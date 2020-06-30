@@ -102,7 +102,12 @@ const ReviewResume = ({ match: { params } }) => {
                 </Button>
               ),
               subscribed && !auth.admin && (
-                <AddTag key="3" uid={uid} admin={userData && userData.admin} />
+                <AddTag
+                  key="3"
+                  uid={uid}
+                  reviewerName={userData.firstName}
+                  admin={userData && userData.admin}
+                />
               )
             ]}>
             <Descriptions size="small" column={2}>
