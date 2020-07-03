@@ -5,7 +5,7 @@ import { Table, Checkbox, message } from 'antd'
 import axios from 'axios'
 import { processJobsData } from '../../utils/helpers'
 
-const Jobs = ({ profession, uid }) => {
+const AddJobs = ({ profession, uid, reviewerName }) => {
   const tagQuery = {
     collection: 'jobs'
   }
@@ -36,17 +36,24 @@ const Jobs = ({ profession, uid }) => {
       })
   }, [profession])
 
-  const handleAddJob = jobUrl => {
+  const handleAddJob = jobId => {
+    const selectedJob = jobs.filter(job => job.id === jobId)[0] || {}
+    const { company, level, publicationDate, title, url } = selectedJob
     firestore
       .collection('jobs')
       .add({
         sender: authId,
         recipient: uid,
         viewed: false,
-        url: jobUrl,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        url,
+        reviewerName,
+        company,
+        level,
+        publicationDate,
+        title
       })
-      .then(() => console.log('Job added successfully'))
+      .then(() => message.success('Job added successfully'))
       .catch(error => message.error(`${error.message}`))
   }
 
@@ -92,8 +99,8 @@ const Jobs = ({ profession, uid }) => {
     },
     {
       title: '',
-      dataIndex: 'url',
-      key: 'url',
+      dataIndex: 'id',
+      key: 'id',
       width: 50,
       render: text => <Checkbox onChange={() => handleAddJob(text)} />
     }
@@ -109,4 +116,4 @@ const Jobs = ({ profession, uid }) => {
   )
 }
 
-export default Jobs
+export default AddJobs

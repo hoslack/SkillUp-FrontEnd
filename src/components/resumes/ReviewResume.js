@@ -16,7 +16,7 @@ import {
 import Loader from '../common/Loader'
 import Reviews from './Reviews'
 import AddTag from './AddTag'
-import Jobs from './Jobs'
+import AddJobs from './AddJobs'
 
 const ReviewResume = ({ match: { params } }) => {
   const auth = useSelector(state => state.firebase.auth)
@@ -70,7 +70,11 @@ const ReviewResume = ({ match: { params } }) => {
         okText="Done"
         visible={jobsVisible}
         onCancel={() => setJobsVisible(false)}>
-        <Jobs profession={userData.profession} uid={uid} />
+        <AddJobs
+          profession={userData.profession}
+          uid={uid}
+          reviewerName={profile.firstName}
+        />
       </Modal>
       {userData && userData.resume ? (
         <div>
