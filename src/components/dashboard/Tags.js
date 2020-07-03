@@ -12,7 +12,7 @@ dayjs.extend(relativeTime)
 const Tags = () => {
   const tagsQuery = {
     collection: 'tags',
-    orderBy: 'timestamp'
+    orderBy: ['timestamp', 'desc']
   }
 
   useFirestoreConnect(() => [tagsQuery])
@@ -111,7 +111,7 @@ const Tags = () => {
         <Table
           rowKey={record => record.id}
           columns={adminTagsColumns}
-          dataSource={displayedTags.reverse() || []}
+          dataSource={displayedTags || []}
           pagination={{ position: ['', 'bottomCenter'], simple: true }}
         />
       </div>

@@ -1,11 +1,12 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Layout, Menu } from 'antd'
+import { useSelector } from 'react-redux'
 import {
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined
 } from '@ant-design/icons'
+import { Layout, Menu } from 'antd'
 import { getLocation } from '../../utils/helpers'
 
 const { SubMenu } = Menu
@@ -13,6 +14,7 @@ const { Sider } = Layout
 
 const SideBar = () => {
   const location = getLocation()
+  const profile = useSelector(({ firebase: { profile } }) => profile)
 
   return (
     <Sider
@@ -44,10 +46,18 @@ const SideBar = () => {
           <Menu.Item key="tags">
             <NavLink to="/tags">Tags</NavLink>
           </Menu.Item>
-          <Menu.Item key="payment">
-            <NavLink to="/payment">Payment</NavLink>
-          </Menu.Item>
+          {!profile.isEmpty && !profile.admin && (
+            <Menu.Item key="payment">
+              <NavLink to="/payment">Payment</NavLink>
+            </Menu.Item>
+          )}
+          {!profile.isEmpty && !profile.admin && (
+            <Menu.Item key="jobs">
+              <NavLink to="/jobs">Jobs</NavLink>
+            </Menu.Item>
+          )}
         </SubMenu>
+
         <SubMenu
           key="profile-items"
           title={
@@ -61,6 +71,7 @@ const SideBar = () => {
           </Menu.Item>
           <Menu.Item key="personal-details">Personal Details</Menu.Item>
         </SubMenu>
+
         <SubMenu
           key="notification-items"
           title={
@@ -70,9 +81,6 @@ const SideBar = () => {
             </span>
           }>
           <Menu.Item key="4">option9</Menu.Item>
-          <Menu.Item key="5">option10</Menu.Item>
-          <Menu.Item key="6">option11</Menu.Item>
-          <Menu.Item key="7">option12</Menu.Item>
         </SubMenu>
       </Menu>
     </Sider>
