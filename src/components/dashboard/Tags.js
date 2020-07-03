@@ -1,7 +1,13 @@
 import React from 'react'
-import { useFirestoreConnect } from 'react-redux-firebase'
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
 import { useSelector } from 'react-redux'
-import { Table, Alert } from 'antd'
+import { Button, Table } from 'antd'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { getStatus } from '../../utils/helpers'
+import { accepted, rejected } from '../../utils/constants'
+
+dayjs.extend(relativeTime)
 
 const Tags = () => {
   const tagsQuery = {
@@ -10,11 +16,16 @@ const Tags = () => {
   }
 
   useFirestoreConnect(() => [tagsQuery])
+  const firestore = useFirestore()
 
   const auth = useSelector(({ firebase: { auth } }) => auth)
   const profile = useSelector(({ firebase: { profile } }) => profile)
   const authId = !auth.isEmpty && auth.uid
   const tags = useSelector(({ firestore: { ordered } }) => ordered.tags) || []
+
+  const deleteTag = id => firestore.delete(`tags/${id}`)
+  const acceptOrRejectTag = (id, status) =>
+    firestore.update(`tags/${id}`, { status: status })
 
   const adminTagsColumns = [
     {
@@ -23,9 +34,37 @@ const Tags = () => {
       key: 'name'
     },
     {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type'
+      title: 'Received',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: text => <h3 className="h2 pt1">{dayjs().to(Number(text))}</h3>
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: text => getStatus(text)
+    },
+    {
+      title: '',
+      dataIndex: 'id',
+      key: 'id',
+      render: text => (
+        <span>
+          <Button
+            onClick={() => acceptOrRejectTag(text, accepted)}
+            type="primary"
+            size="small">
+            Accept
+          </Button>{' '}
+          <Button
+            onClick={() => acceptOrRejectTag(text, rejected)}
+            type="danger"
+            size="small">
+            Reject
+          </Button>
+        </span>
+      )
     },
     {
       title: 'View',
@@ -42,24 +81,26 @@ const Tags = () => {
       key: 'reviewerName'
     },
     {
+      title: 'Sent',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: text => <h3 className="h2 pt1">{dayjs().to(Number(text))}</h3>
+    },
+    {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: text => {
-        let type = 'info'
-        if (text === 'accepted') {
-          type = 'success'
-        } else if (text === 'rejected') {
-          type = 'error'
-        }
-        return (
-          <Alert
-            style={{ maxWidth: 'fit-content' }}
-            message={text}
-            type={type}
-          />
-        )
-      }
+      render: text => getStatus(text)
+    },
+    {
+      title: '',
+      dataIndex: 'id',
+      key: 'id',
+      render: text => (
+        <Button onClick={() => deleteTag(text)} type="danger" size="small">
+          Delete
+        </Button>
+      )
     }
   ]
 

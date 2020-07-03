@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
 import { Table, Checkbox, message } from 'antd'
 import axios from 'axios'
-import months from '../../utils/months'
+import { processJobsData } from '../../utils/helpers'
 
 const Jobs = ({ profession, uid }) => {
   const tagQuery = {
@@ -35,22 +35,6 @@ const Jobs = ({ profession, uid }) => {
         console.log(error)
       })
   }, [profession])
-
-  const processJobsData = (jobs = []) => {
-    return jobs.map(job => {
-      const date = new Date(job.publication_date)
-      const month = months[date.getMonth()]
-      const publicationDate = `${date.getDate()}, ${month}, ${date.getFullYear()}`
-      return {
-        id: job.id,
-        title: job.name,
-        company: job.company.name,
-        url: job.refs.landing_page,
-        publicationDate,
-        level: job.levels[0].name || ''
-      }
-    })
-  }
 
   const handleAddJob = jobUrl => {
     firestore

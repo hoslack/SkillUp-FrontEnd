@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useFirestore, useFirestoreConnect } from 'react-redux-firebase'
 import { Button, message } from 'antd'
+import { pending } from '../../utils/constants'
 
 const AddTag = ({ uid, admin, reviewerName }) => {
   const tagQuery = {
@@ -37,7 +38,7 @@ const AddTag = ({ uid, admin, reviewerName }) => {
         name,
         reviewerName,
         viewed: false,
-        status: 'pending',
+        status: pending,
         timestamp: Date.now()
       })
       .then(() => {

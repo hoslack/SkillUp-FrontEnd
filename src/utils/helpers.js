@@ -1,4 +1,8 @@
 import history from './history'
+import months from './months'
+import { Alert } from 'antd'
+import React from 'react'
+import { accepted, rejected } from './constants'
 
 export const getBase64 = file =>
   new Promise(resolve => {
@@ -31,4 +35,32 @@ export const getLocation = () => {
   } else {
     return location
   }
+}
+
+export const processJobsData = (jobs = []) => {
+  return jobs.map(job => {
+    const date = new Date(job.publication_date)
+    const month = months[date.getMonth()]
+    const publicationDate = `${date.getDate()}, ${month}, ${date.getFullYear()}`
+    return {
+      id: job.id,
+      title: job.name,
+      company: job.company.name,
+      url: job.refs.landing_page,
+      publicationDate,
+      level: job.levels[0].name || ''
+    }
+  })
+}
+
+export const getStatus = text => {
+  let type = 'info'
+  if (text === accepted) {
+    type = 'success'
+  } else if (text === rejected) {
+    type = 'error'
+  }
+  return (
+    <Alert style={{ maxWidth: 'fit-content' }} message={text} type={type} />
+  )
 }
