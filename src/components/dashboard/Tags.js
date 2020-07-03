@@ -1,7 +1,7 @@
 import React from 'react'
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
 import { useSelector } from 'react-redux'
-import { Button, Table } from 'antd'
+import { Table } from 'antd'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getStatus } from '../../utils/helpers'
@@ -51,18 +51,16 @@ const Tags = () => {
       key: 'id',
       render: text => (
         <span>
-          <Button
-            onClick={() => acceptOrRejectTag(text, accepted)}
-            type="primary"
-            size="small">
+          <button
+            className="f6 dim ph3 white bg-green br1 is-borderless"
+            onClick={() => acceptOrRejectTag(text, accepted)}>
             Accept
-          </Button>{' '}
-          <Button
-            onClick={() => acceptOrRejectTag(text, rejected)}
-            type="danger"
-            size="small">
+          </button>{' '}
+          <button
+            className="f6 dim ph3 white bg-red br1 is-borderless"
+            onClick={() => acceptOrRejectTag(text, rejected)}>
             Reject
-          </Button>
+          </button>
         </span>
       )
     },
@@ -97,9 +95,11 @@ const Tags = () => {
       dataIndex: 'id',
       key: 'id',
       render: text => (
-        <Button onClick={() => deleteTag(text)} type="danger" size="small">
+        <button
+          className="f6 dim ph3 white bg-red br1 is-borderless"
+          onClick={() => deleteTag(text)}>
           Delete
-        </Button>
+        </button>
       )
     }
   ]

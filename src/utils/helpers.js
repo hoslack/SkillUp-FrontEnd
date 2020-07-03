@@ -1,6 +1,5 @@
 import history from './history'
 import months from './months'
-import { Alert } from 'antd'
 import React from 'react'
 import { accepted, rejected } from './constants'
 
@@ -54,14 +53,16 @@ export const processJobsData = (jobs = []) => {
 }
 
 export const getStatus = text => {
-  let type = 'info'
+  let color = 'blue b--blue'
   if (text === accepted) {
-    type = 'success'
+    color = 'dark-green b--dark-green'
   } else if (text === rejected) {
-    type = 'error'
+    color = 'red b--red'
   }
   return (
-    <Alert style={{ maxWidth: 'fit-content' }} message={text} type={type} />
+    <button className={`f6 dim dib ba bw1 br3 ph3 dib ${color}`}>
+      {text}
+    </button>
   )
 }
 
