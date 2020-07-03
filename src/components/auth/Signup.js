@@ -1,7 +1,7 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Form, Input, Button, Alert, Select } from 'antd'
-import { signUp } from '../../store/actions'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useFirebase } from 'react-redux-firebase'
+import { Form, Input, Button, Alert, Select, message } from 'antd'
 import professions from '../../utils/professions'
 
 const layout = {
@@ -21,9 +21,10 @@ const tailLayout = {
 const { Option } = Select
 
 const Signup = () => {
-  const dispatch = useDispatch()
+  const firebase = useFirebase()
   const auth = useSelector(state => state.auth)
   const authError = auth.authError
+  const [error, setError] = useState('')
   const onFinish = ({
     firstName,
     lastName,
@@ -32,9 +33,27 @@ const Signup = () => {
     password,
     profession
   }) => {
-    dispatch(
-      signUp({ firstName, lastName, username, email, password, profession })
-    )
+    return firebase
+      .createUser(
+        { email, password },
+        {
+          username,
+          email,
+          firstName,
+          lastName,
+          profession,
+          resume: '',
+          admin: false,
+          subscription: ''
+        }
+      )
+      .then(data => {
+        message.success(`Sign Up was successful, welcome`)
+      })
+      .catch(err => {
+        setError(err.message)
+        message.error(`${error.message}`)
+      })
   }
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PDFViewer from 'pdf-viewer-reactjs'
 import { useFirestore } from 'react-redux-firebase'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import {
   PageHeader,
   Row,
@@ -14,7 +14,6 @@ import {
   Result
 } from 'antd'
 import Loader from '../common/Loader'
-import { createReview } from '../../store/actions/resumeActions'
 import Reviews from './Reviews'
 import AddTag from './AddTag'
 import Jobs from './Jobs'
@@ -22,17 +21,20 @@ import Jobs from './Jobs'
 const ReviewResume = ({ match: { params } }) => {
   const auth = useSelector(state => state.firebase.auth)
   const profile = useSelector(state => state.firebase.profile)
-  const reviewError = useSelector(state => state.resume.reviewError)
-  const db = useFirestore()
-  const dispatch = useDispatch()
+  const [reviewError, setReviewError] = useState(false)
+  const firestore = useFirestore()
   const [userData, setUserData] = useState({})
   const [visible, setVisible] = useState(false)
   const [jobsVisible, setJobsVisible] = useState(false)
   const [reviewSuccess, setReviewSuccess] = useState(false)
   const uid = params.uid || ''
+  const userSubscription =
+    profile.subscription === '' ? '' : new Date(profile.subscription)
+  const subscribed = userSubscription > new Date()
 
   useEffect(() => {
-    db.collection('users')
+    firestore
+      .collection('users')
       .doc(uid)
       .get()
       .then(result => {
@@ -41,20 +43,22 @@ const ReviewResume = ({ match: { params } }) => {
       .catch(error =>
         console.log('There was and error fetching The resume', error)
       )
-  }, [db, uid])
+  }, [firestore, uid])
 
   const handleSubmitReview = ({ review }) => {
-    dispatch(
-      createReview({
+    firestore
+      .collection('reviews')
+      .add({
         content: review,
         userId: uid,
-        authorId: auth.uid || ''
+        authorId: auth.uid || '',
+        timestamp: Date.now()
       })
-    )
-    if (reviewError) {
-      setReviewSuccess(false)
-    }
-    setReviewSuccess(true)
+      .then(() => setReviewSuccess(true))
+      .catch(() => {
+        setReviewSuccess(false)
+        setReviewError(true)
+      })
   }
 
   return (
@@ -66,7 +70,7 @@ const ReviewResume = ({ match: { params } }) => {
         okText="Done"
         visible={jobsVisible}
         onCancel={() => setJobsVisible(false)}>
-        <Jobs profession={userData.profession} />
+        <Jobs profession={userData.profession} uid={uid} />
       </Modal>
       {userData && userData.resume ? (
         <div>
@@ -97,13 +101,19 @@ const ReviewResume = ({ match: { params } }) => {
                   View Jobs
                 </Button>
               ),
-              <AddTag key="3" uid={uid} admin={userData && userData.admin} />
+              subscribed && !auth.admin && (
+                <AddTag
+                  key="3"
+                  uid={uid}
+                  reviewerName={userData.firstName}
+                  admin={userData && userData.admin}
+                />
+              )
             ]}>
             <Descriptions size="small" column={2}>
               <Descriptions.Item label="Profession">
                 {userData.profession}
               </Descriptions.Item>
-              <Descriptions.Item label="Reviews">0</Descriptions.Item>
             </Descriptions>
           </PageHeader>
 

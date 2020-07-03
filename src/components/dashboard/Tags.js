@@ -1,41 +1,70 @@
-import React, { useEffect, useState } from 'react'
-import { useFirestore } from 'react-redux-firebase'
+import React from 'react'
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
 import { useSelector } from 'react-redux'
-import { Table } from 'antd'
+import { Button, Table } from 'antd'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { getStatus } from '../../utils/helpers'
+import { accepted, rejected } from '../../utils/constants'
+
+dayjs.extend(relativeTime)
 
 const Tags = () => {
-  const [tags, setTags] = useState([])
-  const db = useFirestore()
-  const auth = useSelector(state => state.firebase.auth)
+  const tagsQuery = {
+    collection: 'tags',
+    orderBy: 'timestamp'
+  }
+
+  useFirestoreConnect(() => [tagsQuery])
+  const firestore = useFirestore()
+
+  const auth = useSelector(({ firebase: { auth } }) => auth)
+  const profile = useSelector(({ firebase: { profile } }) => profile)
   const authId = !auth.isEmpty && auth.uid
+  const tags = useSelector(({ firestore: { ordered } }) => ordered.tags) || []
 
-  useEffect(() => {
-    const tagsArray = []
-    db.collection('tags').onSnapshot(
-      snapshot => {
-        snapshot.forEach(doc => {
-          if (doc.data().recipient === authId) {
-            tagsArray.push(doc.data())
-          }
-        })
-        setTags(tagsArray)
-      },
-      error => {
-        console.log(error)
-      }
-    )
-  }, [db, authId])
+  const deleteTag = id => firestore.delete(`tags/${id}`)
+  const acceptOrRejectTag = (id, status) =>
+    firestore.update(`tags/${id}`, { status: status })
 
-  const columns = [
+  const adminTagsColumns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name'
     },
     {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type'
+      title: 'Received',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: text => <h3 className="h2 pt1">{dayjs().to(Number(text))}</h3>
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: text => getStatus(text)
+    },
+    {
+      title: '',
+      dataIndex: 'id',
+      key: 'id',
+      render: text => (
+        <span>
+          <Button
+            onClick={() => acceptOrRejectTag(text, accepted)}
+            type="primary"
+            size="small">
+            Accept
+          </Button>{' '}
+          <Button
+            onClick={() => acceptOrRejectTag(text, rejected)}
+            type="danger"
+            size="small">
+            Reject
+          </Button>
+        </span>
+      )
     },
     {
       title: 'View',
@@ -45,16 +74,63 @@ const Tags = () => {
     }
   ]
 
-  return (
-    <div className="vh-100">
-      <Table
-        rowKey={record => record.id}
-        columns={columns}
-        dataSource={tags || []}
-        pagination={{ position: ['', 'bottomCenter'], simple: true }}
-      />
-    </div>
-  )
+  const tagsColumns = [
+    {
+      title: 'Reviewer',
+      dataIndex: 'reviewerName',
+      key: 'reviewerName'
+    },
+    {
+      title: 'Sent',
+      dataIndex: 'timestamp',
+      key: 'timestamp',
+      render: text => <h3 className="h2 pt1">{dayjs().to(Number(text))}</h3>
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: text => getStatus(text)
+    },
+    {
+      title: '',
+      dataIndex: 'id',
+      key: 'id',
+      render: text => (
+        <Button onClick={() => deleteTag(text)} type="danger" size="small">
+          Delete
+        </Button>
+      )
+    }
+  ]
+
+  if (profile.isLoaded && profile.admin) {
+    const displayedTags = tags.filter(tag => tag.recipient === authId) || []
+    return (
+      <div className="vh-100">
+        <Table
+          rowKey={record => record.id}
+          columns={adminTagsColumns}
+          dataSource={displayedTags.reverse() || []}
+          pagination={{ position: ['', 'bottomCenter'], simple: true }}
+        />
+      </div>
+    )
+  } else if (profile.isLoaded && !profile.admin) {
+    const displayedTags = tags.filter(tag => tag.sender === authId) || []
+    return (
+      <div className="vh-100">
+        <Table
+          rowKey={record => record.id}
+          columns={tagsColumns}
+          dataSource={displayedTags || []}
+          pagination={{ position: ['', 'bottomCenter'], simple: true }}
+        />
+      </div>
+    )
+  } else {
+    return ''
+  }
 }
 
 export default Tags

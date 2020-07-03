@@ -44,6 +44,9 @@ const SideBar = () => {
           <Menu.Item key="tags">
             <NavLink to="/tags">Tags</NavLink>
           </Menu.Item>
+          <Menu.Item key="payment">
+            <NavLink to="/payment">Payment</NavLink>
+          </Menu.Item>
         </SubMenu>
         <SubMenu
           key="profile-items"
