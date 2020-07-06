@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Form, Input, Button, Alert, message } from 'antd'
 import { useFirebase } from 'react-redux-firebase'
-import history from '../../utils/history'
-
 const layout = {
   labelCol: {
     span: 8
@@ -31,13 +29,13 @@ const Signin = () => {
       .then(data => {
         message.success(`Sign In was successful, welcome`)
       })
-      .catch(error => {
-        setError(error.message)
-        message.error(`${error.message}`)
+      .catch(err => {
+        setError(err.message)
+        message.error(`${error}`)
       })
   }
   const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo)
+    message.error(`Failed: ${errorInfo}`)
   }
 
   return (
