@@ -60,9 +60,7 @@ export const getStatus = text => {
     color = 'red b--red'
   }
   return (
-    <button className={`f6 dim dib ba bw1 br3 ph3 dib ${color}`}>
-      {text}
-    </button>
+    <button className={`f6 dib ba bw1 br3 ph3 dib ${color}`}>{text}</button>
   )
 }
 

@@ -11,7 +11,8 @@ import {
   Modal,
   Input,
   Form,
-  Result
+  Result,
+  message
 } from 'antd'
 import Loader from '../common/Loader'
 import Reviews from './Reviews'
@@ -40,15 +41,14 @@ const ReviewResume = ({ match: { params } }) => {
       .then(result => {
         setUserData(result.data())
       })
-      .catch(error =>
-        console.log('There was and error fetching The resume', error)
-      )
+      .catch(() => message.error('There was and error fetching The resume'))
   }, [firestore, uid])
 
   const handleSubmitReview = ({ review }) => {
     firestore
       .collection('reviews')
       .add({
+        authorEmail: profile.email,
         content: review,
         userId: uid,
         authorId: auth.uid || '',
@@ -65,7 +65,6 @@ const ReviewResume = ({ match: { params } }) => {
     <div className="">
       <Modal
         width="70%"
-        footer={false}
         title="Available Jobs"
         okText="Done"
         visible={jobsVisible}

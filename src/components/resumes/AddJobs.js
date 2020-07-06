@@ -32,7 +32,7 @@ const AddJobs = ({ profession, uid, reviewerName }) => {
       .catch(error => {
         setIsLoaded(true)
         setError(error)
-        console.log(error)
+        message.error(error.message)
       })
   }, [profession])
 

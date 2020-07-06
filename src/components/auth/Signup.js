@@ -56,7 +56,7 @@ const Signup = () => {
       })
   }
   const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo)
+    message.error(`Failed: ${errorInfo}`)
   }
 
   return (

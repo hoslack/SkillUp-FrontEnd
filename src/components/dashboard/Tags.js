@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getStatus } from '../../utils/helpers'
 import { accepted, rejected } from '../../utils/constants'
+import { DeleteTwoTone } from '@ant-design/icons'
 
 dayjs.extend(relativeTime)
 
@@ -96,9 +97,9 @@ const Tags = () => {
       key: 'id',
       render: text => (
         <button
-          className="f6 dim ph3 white bg-red br1 is-borderless"
+          className="f6 dim ph3 br3 ba b--red shadow-1"
           onClick={() => deleteTag(text)}>
-          Delete
+          <DeleteTwoTone twoToneColor="red" />
         </button>
       )
     }
