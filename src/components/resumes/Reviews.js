@@ -59,7 +59,7 @@ const Reviews = ({ uid }) => {
         title="Reviews"
         style={{
           width: 300,
-          height: '400px',
+          height: '500px',
           overflowY: 'scroll',
           borderRadius: '10px'
         }}

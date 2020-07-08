@@ -35,7 +35,7 @@ const ReviewNotifications = () => {
       dataIndex: 'recipient',
       key: 'recipient',
       width: 50,
-      render: text => <a href={`review/${text}`}>Open</a>
+      render: text => <a href={`/review/${text}`}>Open</a>
     }
   ]
 
