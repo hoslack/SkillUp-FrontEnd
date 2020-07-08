@@ -1,7 +1,7 @@
 import Dashboard from './Dashboard'
-import Notifications from './Notifications'
+import ReviewNotifications from './ReviewNotifications'
 import Tags from './Tags'
 import Payment from './Payment'
 import Jobs from './Jobs'
 
-export { Dashboard, Notifications, Tags, Payment, Jobs }
+export { Dashboard, ReviewNotifications, Tags, Payment, Jobs }

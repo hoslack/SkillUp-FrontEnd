@@ -2,6 +2,7 @@ import history from './history'
 import months from './months'
 import React from 'react'
 import { accepted, rejected } from './constants'
+import { Tag } from 'antd'
 
 export const getBase64 = file =>
   new Promise(resolve => {
@@ -53,16 +54,14 @@ export const processJobsData = (jobs = []) => {
 }
 
 export const getStatus = text => {
-  let color = 'blue b--blue'
+  let color = 'geekblue'
   if (text === accepted) {
-    color = 'dark-green b--dark-green'
+    color = 'green'
   } else if (text === rejected) {
-    color = 'red b--red'
+    color = 'volcano'
   }
-  return (
-    <button className={`f6 dib ba bw1 br3 ph3 dib ${color}`}>{text}</button>
-  )
+  return <Tag color={color}>{text}</Tag>
 }
 
-export const filterJobs = (jobs = [], uid = '') =>
-  jobs.filter(job => job.recipient === uid)
+export const filterByRecipient = (data = [], uid = '') =>
+  data.filter(item => item.recipient === uid)

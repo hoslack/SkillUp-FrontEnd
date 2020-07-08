@@ -2,7 +2,7 @@ import React from 'react'
 import { useFirestoreConnect } from 'react-redux-firebase'
 import { useSelector } from 'react-redux'
 import { Table } from 'antd'
-import { filterJobs } from '../../utils/helpers'
+import { filterByRecipient } from '../../utils/helpers'
 
 const Jobs = () => {
   const auth = useSelector(({ firebase: { auth } }) => auth)
@@ -67,8 +67,8 @@ const Jobs = () => {
       <Table
         rowKey={record => record.id}
         columns={columns}
-        dataSource={filterJobs(jobs, auth.uid)}
-        pagination={{ position: ['', 'bottomCenter'], simple: true }}
+        dataSource={filterByRecipient(jobs, auth.uid)}
+        pagination={{ position: ['none', 'bottomCenter'], simple: true }}
       />
     )
   )

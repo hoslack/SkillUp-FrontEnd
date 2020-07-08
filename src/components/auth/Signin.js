@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { Form, Input, Button, Alert, message } from 'antd'
 import { useFirebase } from 'react-redux-firebase'
@@ -21,7 +21,6 @@ const Signin = () => {
   const firebase = useFirebase()
   const auth = useSelector(state => state.auth)
   const authError = auth.authError
-  const [error, setError] = useState('')
 
   const onFinish = ({ email, password }) => {
     return firebase
@@ -29,9 +28,8 @@ const Signin = () => {
       .then(data => {
         message.success(`Sign In was successful, welcome`)
       })
-      .catch(err => {
-        setError(err.message)
-        message.error(`${error}`)
+      .catch(error => {
+        message.error(`${error.message}`)
       })
   }
   const onFinishFailed = errorInfo => {

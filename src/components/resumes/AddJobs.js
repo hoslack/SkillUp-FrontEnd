@@ -13,8 +13,6 @@ const AddJobs = ({ profession, uid, reviewerName }) => {
   useFirestoreConnect(() => [tagQuery])
   const firestore = useFirestore()
 
-  const [error, setError] = useState(null)
-  const [isLoaded, setIsLoaded] = useState(false)
   const [jobs, setJobs] = useState([])
   const auth = useSelector(state => state.firebase.auth)
   const authId = !auth.isEmpty && auth.uid
@@ -26,12 +24,9 @@ const AddJobs = ({ profession, uid, reviewerName }) => {
         {}
       )
       .then(response => {
-        setIsLoaded(true)
         setJobs(processJobsData(response.data.results))
       })
       .catch(error => {
-        setIsLoaded(true)
-        setError(error)
         message.error(error.message)
       })
   }, [profession])
@@ -110,7 +105,7 @@ const AddJobs = ({ profession, uid, reviewerName }) => {
     <Table
       rowKey={record => record.id}
       columns={columns}
-      dataSource={jobs}
+      dataSource={jobs || []}
       pagination={{ position: ['', 'bottomCenter'], simple: true }}
     />
   )
