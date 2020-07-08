@@ -54,7 +54,20 @@ const ReviewResume = ({ match: { params } }) => {
         authorId: auth.uid || '',
         timestamp: Date.now()
       })
-      .then(() => setReviewSuccess(true))
+      .then(() => {
+        setReviewSuccess(true)
+        firestore
+          .collection('notifications')
+          .add({
+            type: 'review',
+            viewed: false,
+            recipient: uid,
+            reviewer: profile.firstName,
+            timestamp: Date.now()
+          })
+          .then(() => {})
+          .catch(() => message.error('There was an error adding the Review'))
+      })
       .catch(() => {
         setReviewSuccess(false)
         setReviewError(true)

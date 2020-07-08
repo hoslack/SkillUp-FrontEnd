@@ -71,17 +71,6 @@ const SideBar = () => {
           </Menu.Item>
           <Menu.Item key="personal-details">Personal Details</Menu.Item>
         </SubMenu>
-
-        <SubMenu
-          key="notification-items"
-          title={
-            <span>
-              <NotificationOutlined />
-              Notifications
-            </span>
-          }>
-          <Menu.Item key="4">option9</Menu.Item>
-        </SubMenu>
       </Menu>
     </Sider>
   )

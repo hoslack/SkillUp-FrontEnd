@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useFirestoreConnect, useFirestore } from 'react-redux-firebase'
 import { Button, Card, Form, Input, message, Modal, Result } from 'antd'
@@ -12,8 +12,7 @@ const Reviews = ({ uid }) => {
   }
   useFirestoreConnect(() => [reviewsQuery])
   const firestore = useFirestore()
-  const { useForm } = Form
-  const [form] = useForm()
+  const [form] = Form.useForm()
   const [currentId, setCurrentID] = useState('')
   const [visible, setVisible] = useState(false)
   const [reviewSuccess, setReviewSuccess] = useState(false)
@@ -30,10 +29,10 @@ const Reviews = ({ uid }) => {
   )
   const profile = useSelector(({ firebase: { profile } }) => profile)
 
-
   const deleteReview = id => {
     firestore
       .delete(`reviews/${id}`)
+      .then(() => message.success('Deleted'))
       .catch(() => message.error('There was a problem deleting the review'))
   }
 
@@ -46,7 +45,6 @@ const Reviews = ({ uid }) => {
         setReviewSuccess(true)
         setTimeout(() => {
           setVisible(false)
-          setCurrentContent('')
         }, 2000)
       })
       .catch(() => {
@@ -127,7 +125,7 @@ const Reviews = ({ uid }) => {
           ) : (
             <Form
               form={form}
-              setFieldValue={{ review: currentContent }}
+              initialValues={{ review: currentContent }}
               onFinish={handleUpdateReview}
               style={{ paddingRight: '20%' }}>
               <Form.Item
