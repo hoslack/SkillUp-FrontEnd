@@ -72,8 +72,8 @@ const Payment = () => {
           <div>
             <h1>
               Congrats, Your Subscription is active until{' '}
-              {userSubscription.getFullYear()}{' '}
               {months[userSubscription.getMonth()]}{' '}
+              {userSubscription.getFullYear()}{' '}
             </h1>
           </div>
         ) : (

@@ -12,7 +12,8 @@ import {
   Input,
   Form,
   Result,
-  message
+  message,
+  Badge
 } from 'antd'
 import Loader from '../common/Loader'
 import Reviews from './Reviews'
@@ -130,6 +131,16 @@ const ReviewResume = ({ match: { params } }) => {
               <Descriptions.Item label="Profession">
                 {userData.profession}
               </Descriptions.Item>
+              {userData.admin && userData.votes && (
+                <Descriptions.Item label="Upvotes">
+                  <Badge
+                    className="site-badge-count-109"
+                    count={userData.votes || 0}
+                    overflowCount={999}
+                    style={{ backgroundColor: '#1890ff' }}
+                  />
+                </Descriptions.Item>
+              )}
             </Descriptions>
           </PageHeader>
 
