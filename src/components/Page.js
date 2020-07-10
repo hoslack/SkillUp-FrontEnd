@@ -7,15 +7,15 @@ import Navbar from './layouts/Navbar'
 import SideBar from './layouts/SideBar'
 import Home from './Home'
 import { Dashboard, Tags, Payment, Jobs } from './dashboard'
+import { Profile } from './auth'
 import Resume from './resumes/Resume'
 import ReviewResume from './resumes/ReviewResume'
 import history from '../utils/history'
 
 const { Content } = Layout
 
-const Page = props => {
+const Page = () => {
   const profile = useSelector(state => state.firebase.profile)
-  const firebase = props.firebase
   return (
     <Router history={history}>
       {!profile.isEmpty ? (
@@ -32,11 +32,8 @@ const Page = props => {
                 <Route exact component={Jobs} path="/jobs" />
                 <Route exact component={Payment} path="/payment" />
                 <Route exact component={ReviewResume} path="/review/:uid" />
-                <Route
-                  exact
-                  component={() => <Resume firebase={firebase} />}
-                  path="/resume"
-                />
+                <Route exact component={Profile} path="/details" />
+                <Route exact component={Resume} path="/resume" />
               </Switch>
             </Content>
           </Layout>
