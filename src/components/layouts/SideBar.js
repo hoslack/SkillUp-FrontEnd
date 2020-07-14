@@ -56,6 +56,11 @@ const SideBar = () => {
               <NavLink to="/jobs">Jobs</NavLink>
             </Menu.Item>
           )}
+          {!profile.isEmpty && profile.admin && (
+            <Menu.Item key="reviewer-payments">
+              <NavLink to="/reviewer-payments">Reviewer Payments</NavLink>
+            </Menu.Item>
+          )}
         </SubMenu>
 
         <SubMenu
@@ -69,7 +74,9 @@ const SideBar = () => {
           <Menu.Item key="resume">
             <NavLink to="/resume">My Resume</NavLink>
           </Menu.Item>
-          <Menu.Item key="personal-details">Personal Details</Menu.Item>
+          <Menu.Item key="details">
+            <NavLink to="/details">Personal Details</NavLink>
+          </Menu.Item>
         </SubMenu>
       </Menu>
     </Sider>
