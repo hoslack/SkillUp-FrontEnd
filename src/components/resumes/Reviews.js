@@ -178,7 +178,6 @@ const Reviews = ({ uid }) => {
           ) : (
             <Form
               form={form}
-              initialValues={{ review: currentContent }}
               onFinish={handleUpdateReview}
               style={{ paddingRight: '20%' }}>
               <Form.Item

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import Navbar from './layouts/Navbar'
 import SideBar from './layouts/SideBar'
 import Home from './Home'
-import { Dashboard, Tags, Payment, Jobs } from './dashboard'
+import { Dashboard, Tags, Payment, Jobs, ReviewerPayments } from './dashboard'
 import { Profile } from './auth'
 import Resume from './resumes/Resume'
 import ReviewResume from './resumes/ReviewResume'
@@ -34,6 +34,11 @@ const Page = () => {
                 <Route exact component={ReviewResume} path="/review/:uid" />
                 <Route exact component={Profile} path="/details" />
                 <Route exact component={Resume} path="/resume" />
+                <Route
+                  exact
+                  component={ReviewerPayments}
+                  path="/reviewer-payments"
+                />
               </Switch>
             </Content>
           </Layout>

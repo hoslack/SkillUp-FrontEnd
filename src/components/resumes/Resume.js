@@ -1,54 +1,33 @@
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useFirebase } from 'react-redux-firebase'
+import { useFirestore, useFirestoreConnect } from 'react-redux-firebase'
 import { useDropzone } from 'react-dropzone'
 import { UploadOutlined } from '@ant-design/icons'
-import { Button, Alert, Col, Row } from 'antd'
+import { Button, Alert, Col, Row, message } from 'antd'
 import prettyBytes from 'pretty-bytes'
 import PDFViewer from 'pdf-viewer-reactjs'
 import { getBase64 } from '../../utils/helpers'
+import {
+  baseStyle,
+  uploadStyle,
+  acceptStyle,
+  activeStyle,
+  rejectStyle
+} from '../../utils/dropZoneStyles'
 import Loader from '../common/Loader'
 import Reviews from './Reviews'
 
-const baseStyle = {
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '20px',
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: '#eeeeee',
-  borderStyle: 'dashed',
-  backgroundColor: '#bfbfbf',
-  color: '#595959',
-  outline: 'none',
-  transition: 'border .24s ease-in-out'
-}
-
-const activeStyle = {
-  borderColor: '#2196f3'
-}
-
-const acceptStyle = {
-  borderColor: '#00e676'
-}
-
-const rejectStyle = {
-  borderColor: '#ff1744'
-}
-
-const uploadStyle = {
-  display: 'flex',
-  justifyContent: 'space-evenly',
-  alignItems: 'baseline',
-  paddingTop: '20px'
-}
-
 const Resume = () => {
-  const firebase = useFirebase()
+  const usersQuery = {
+    collection: 'users'
+  }
+
+  useFirestoreConnect(() => [usersQuery])
+  const firestore = useFirestore()
   const [uploadError, setUploadError] = useState('')
-  const profile = useSelector(state => state.firebase.profile)
+  const profile = useSelector(({ firebase: { profile } }) => profile)
+  const auth = useSelector(({ firebase: { auth } }) => auth)
+
   const {
     acceptedFiles,
     getRootProps,
@@ -74,14 +53,24 @@ const Resume = () => {
       acceptedFiles[0]
     getBase64(file)
       .then(result => {
-        firebase.updateProfile({ resume: result.split(',')[1] })
+        firestore
+          .update(`users/${auth.uid}`, { resume: result.split(',')[1] })
+          .then(() => message.success('Resume uploaded successfully'))
+          .catch(error => message.error(error.message))
       })
       .catch(err => {
         setUploadError(err)
       })
   }
 
-  if (profile.isEmpty) {
+  const deleteResume = () => {
+    firestore
+      .update(`users/${auth.uid}`, { resume: '' })
+      .then(() => message.success('Resume deleted successfully'))
+      .catch(error => message.error(error.message))
+  }
+
+  if (profile.isEmpty || !profile.isLoaded) {
     return <Loader />
   }
 
@@ -141,9 +130,18 @@ const Resume = () => {
             )}
           </div>
         </Col>
-        <Col span={6}>
-          {profile && profile.resume && <Reviews uid={profile.id} />}
-        </Col>
+        {profile && profile.resume && (
+          <Col span={6}>
+            <Button
+              onClick={() => deleteResume()}
+              style={{ marginBottom: '30px' }}
+              type="primary"
+              danger>
+              Delete Resume
+            </Button>
+            <Reviews uid={auth.uid} />
+          </Col>
+        )}
       </Row>
     </div>
   )

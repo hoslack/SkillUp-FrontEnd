@@ -26,7 +26,13 @@ export const selectReviews = (reviews = [], uid) =>
 
 export const getLocation = () => {
   const profileLocations = ['resume', 'details']
-  const dashboardLocations = ['dashboard', 'tags', 'payment', 'jobs']
+  const dashboardLocations = [
+    'dashboard',
+    'tags',
+    'payment',
+    'jobs',
+    'reviewer-payments'
+  ]
   const location = history.location.pathname.split('/')[1]
   if (profileLocations.includes(location)) {
     return { selectedKey: 'profile', openKey: location }
@@ -59,6 +65,19 @@ export const getStatus = text => {
     color = 'green'
   } else if (text === rejected) {
     color = 'volcano'
+  }
+  return <Tag color={color}>{text}</Tag>
+}
+
+export const getPaymentStatus = status => {
+  let color = 'geekblue'
+  let text = ''
+  if (status) {
+    color = 'green'
+    text = 'Yes'
+  } else {
+    color = 'geekblue'
+    text = 'Pending'
   }
   return <Tag color={color}>{text}</Tag>
 }
