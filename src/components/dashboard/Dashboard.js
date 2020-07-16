@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useFirestoreConnect } from 'react-redux-firebase'
+import { useFirestoreConnect} from 'react-redux-firebase'
 import { Table, Input, Button } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import Highlighter from 'react-highlight-words'
 import { alterUsers } from '../../utils/helpers'
 
 const Dashboard = () => {
-  useFirestoreConnect('users')
+  const usersQuery = {
+    collection: 'users',
+    orderBy: ['firstName', 'asc']
+  }
+
+  useFirestoreConnect(() => [usersQuery])
   const users = alterUsers(useSelector(state => state.firestore.ordered.users))
   const [searchText, setSearch] = useState('')
   const [searchedColumn, setColumn] = useState('')
