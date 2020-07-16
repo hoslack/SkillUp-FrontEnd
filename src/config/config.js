@@ -9,10 +9,34 @@ export const firebase = {
   measurementId: 'G-JRBGT9N4R1'
 }
 
+const profileFactory = (userData, profileData, firebase) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    admin,
+    profession,
+    resume,
+    subscription
+  } = profileData
+  const initials = `${firstName[0]}${lastName[0]}`.toUpperCase()
+  return {
+    email,
+    firstName,
+    lastName,
+    admin,
+    profession,
+    resume,
+    initials,
+    subscription
+  }
+}
+
 export const rrfConfig = {
   userProfile: 'users',
-  useFirestoreForProfile: true, // Store in Firestore instead of Real Time DB
-  enableLogging: false
+  useFirestoreForProfile: true,
+  enableLogging: false,
+  profileFactory
 }
 
 export default { firebase, rrfConfig }

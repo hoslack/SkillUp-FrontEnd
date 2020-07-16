@@ -1,23 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { PrivateLinks, PublicLinks } from './index'
+import PrivateLinks from './PrivateLinks'
+import PublicLinks from './PublicLinks'
+import { Layout } from 'antd'
+import Logo from '../../utils/icons/logo.png'
 
 const Navbar = () => {
-  const auth = useSelector(state => state.firebase.auth)
-  const authIsLoaded = auth && auth.isLoaded
+  const profile = useSelector(state => state.firebase.profile)
+  const links = !profile.isEmpty ? <PrivateLinks /> : <PublicLinks />
+  const { Header } = Layout
 
-  console.log(auth, 'FIREBASE')
-  const links = auth.uid ? <PrivateLinks /> : <PublicLinks />
   return (
-    <nav className="nav-wrapper grey darken-3">
-      <div className="container">
-        <Link className="brand-logo" to="/">
-          Home
-        </Link>
-        {authIsLoaded && links}
-      </div>
-    </nav>
+    <Header
+      className="header"
+      style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+      <img className="logo" src={Logo} alt="Home" />
+      {profile.isLoaded && links}
+    </Header>
   )
 }
 

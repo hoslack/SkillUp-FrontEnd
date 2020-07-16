@@ -1,4 +1,5 @@
 import Signin from './Signin'
 import Signup from './Signup'
+import Profile from './Profile'
 
-export { Signup, Signin }
+export { Signup, Signin, Profile }

@@ -1,37 +1,23 @@
-import types from '../types'
-const getTypes = types()
+import {
+  CREATE_SUBSCRIPTION_SUCCESS,
+  CREATE_SUBSCRIPTION_ERROR
+} from '../types'
 
 const initialState = {
-  authError: null
+  authError: null,
+  subscriptionError: null
 }
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case getTypes.LOGIN_ERROR:
-      return {
-        ...state,
-        authError: action.payload.message
-      }
-    case getTypes.LOGIN_SUCCESS:
-      return {
-        ...state,
-        authError: null
-      }
-    case getTypes.LOGOUT_SUCCESS:
+    case CREATE_SUBSCRIPTION_SUCCESS:
       return {
         ...state
       }
-    case getTypes.SIGNUP_SUCCESS:
-      console.log('Sign up Success')
+    case CREATE_SUBSCRIPTION_ERROR:
       return {
         ...state,
-        authError: null
-      }
-    case getTypes.SIGNUP_ERROR:
-      console.log('Sign up Error')
-      return {
-        ...state,
-        authError: action.payload.message
+        subscriptionError: action.payload.message
       }
     default:
       return state

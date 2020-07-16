@@ -1,45 +1,22 @@
-import types from '../types'
-const getTypes = types()
+import {
+  CREATE_SUBSCRIPTION_SUCCESS,
+  CREATE_SUBSCRIPTION_ERROR
+} from '../types'
 
-export const signUp = ({ firstName, lastName, username, email, password }) => {
+export const updateSubscription = () => {
   return (dispatch, getState, { getFirebase }) => {
+    const now = new Date()
+    now.setFullYear(now.getFullYear() + 1)
     const firebase = getFirebase()
-    const firestore = getFirebase().firestore()
     firebase
-      .createUser({ email, password }, { username, email, firstName, lastName })
+      .updateProfile({
+        subscription: now.toDateString()
+      })
       .then(() => {
-        dispatch({ type: getTypes.SIGNUP_SUCCESS, payload: {} })
+        dispatch({ type: CREATE_SUBSCRIPTION_SUCCESS, payload: {} })
       })
       .catch(error => {
-        dispatch({ type: getTypes.SIGNUP_ERROR, payload: error })
-      })
-  }
-}
-
-export const signIn = ({ email, password }) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase()
-    firebase
-      .login({ email, password })
-      .then(() => {
-        dispatch({ type: getTypes.LOGIN_SUCCESS, payload: {} })
-      })
-      .catch(err => {
-        dispatch({ type: getTypes.LOGIN_ERROR, payload: err })
-      })
-  }
-}
-
-export const signOut = () => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase()
-    firebase
-      .logout()
-      .then(() => {
-        dispatch({ type: getTypes.LOGOUT_SUCCESS, payload: {} })
-      })
-      .catch(() => {
-        dispatch({ type: getTypes.LOGOUT_ERROR })
+        dispatch({ type: CREATE_SUBSCRIPTION_ERROR, payload: error })
       })
   }
 }

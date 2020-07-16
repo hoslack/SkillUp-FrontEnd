@@ -1,47 +1,90 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { signIn } from '../../store/actions/authActions'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Form, Input, Button, Alert, message } from 'antd'
+import { useFirebase } from 'react-redux-firebase'
+const layout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 16
+  }
+}
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16
+  }
+}
 
 const Signin = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const authError = useSelector(state => state.auth.authError)
-  const dispatch = useDispatch()
+  const firebase = useFirebase()
+  const auth = useSelector(state => state.auth)
+  const authError = auth.authError
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    console.log(authError)
-    dispatch(signIn({ email, password }))
+  const onFinish = ({ email, password }) => {
+    return firebase
+      .login({ email, password })
+      .then(data => {
+        message.success(`Sign In was successful, welcome`)
+      })
+      .catch(error => {
+        message.error(`${error.message}`)
+      })
   }
+  const onFinishFailed = errorInfo => {
+    message.error(`Failed: ${errorInfo}`)
+  }
+
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit} className="white">
-        <h5 className="grey-text text-darken-3">Sign In</h5>
-        <div className="input-field">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            onChange={e => setEmail(e.target.value)}
-          />
-        </div>
+    <div className="">
+      {authError && (
+        <Alert
+          style={{ marginBottom: '20px' }}
+          message="Error"
+          description={authError}
+          type="error"
+          showIcon
+        />
+      )}
+      <Form
+        {...layout}
+        style={{ paddingRight: '20%' }}
+        name="basic"
+        initialValues={{}}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}>
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email!',
+              type: 'email'
+            }
+          ]}>
+          <Input />
+        </Form.Item>
 
-        {/**/}
-        <div className="input-field">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            onChange={e => setPassword(e.target.value)}
-          />
-        </div>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!'
+            }
+          ]}>
+          <Input.Password />
+        </Form.Item>
 
-        {/**/}
-        <div className="input-field">
-          <button className="btn pink lighten-1 z-depth-0">Sign In</button>
-        </div>
-      </form>
-      <div className="red-text center">{authError && <p>{authError}</p>}</div>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   )
 }

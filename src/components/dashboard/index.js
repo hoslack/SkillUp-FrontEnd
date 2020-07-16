@@ -1,4 +1,8 @@
 import Dashboard from './Dashboard'
-import Notifications from './Notifications'
+import ReviewNotifications from './ReviewNotifications'
+import Tags from './Tags'
+import Payment from './Payment'
+import Jobs from './Jobs'
+import ReviewerPayments from './ReviewerPayments'
 
-export { Dashboard, Notifications }
+export { Dashboard, ReviewNotifications, Tags, Payment, Jobs, ReviewerPayments }
