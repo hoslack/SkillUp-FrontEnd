@@ -1,8 +1,11 @@
 import history from './history'
-import months from './months'
 import React from 'react'
 import { accepted, rejected } from './constants'
 import { Tag } from 'antd'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 export const getBase64 = file =>
   new Promise(resolve => {
@@ -26,13 +29,7 @@ export const selectReviews = (reviews = [], uid) =>
 
 export const getLocation = () => {
   const profileLocations = ['resume', 'details']
-  const dashboardLocations = [
-    'dashboard',
-    'tags',
-    'payment',
-    'jobs',
-    'reviewer-payments'
-  ]
+  const dashboardLocations = ['dashboard', 'tags', 'jobs']
   const location = history.location.pathname.split('/')[1]
   if (profileLocations.includes(location)) {
     return { selectedKey: 'profile', openKey: location }
@@ -46,8 +43,7 @@ export const getLocation = () => {
 export const processJobsData = (jobs = []) => {
   return jobs.map(job => {
     const date = new Date(job.publication_date)
-    const month = months[date.getMonth()]
-    const publicationDate = `${date.getDate()}, ${month}, ${date.getFullYear()}`
+    const publicationDate = dayjs(date).format('MMM, DD YYYY')
     return {
       id: job.id,
       title: job.name,
@@ -65,19 +61,6 @@ export const getStatus = text => {
     color = 'green'
   } else if (text === rejected) {
     color = 'volcano'
-  }
-  return <Tag color={color}>{text}</Tag>
-}
-
-export const getPaymentStatus = status => {
-  let color = 'geekblue'
-  let text = ''
-  if (status) {
-    color = 'green'
-    text = 'Yes'
-  } else {
-    color = 'geekblue'
-    text = 'Pending'
   }
   return <Tag color={color}>{text}</Tag>
 }

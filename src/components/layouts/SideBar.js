@@ -1,11 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined
-} from '@ant-design/icons'
+import { LaptopOutlined, UserOutlined } from '@ant-design/icons'
 import { Layout, Menu } from 'antd'
 import { getLocation } from '../../utils/helpers'
 
@@ -47,18 +43,8 @@ const SideBar = () => {
             <NavLink to="/tags">Tags</NavLink>
           </Menu.Item>
           {!profile.isEmpty && !profile.admin && (
-            <Menu.Item key="payment">
-              <NavLink to="/payment">Payment</NavLink>
-            </Menu.Item>
-          )}
-          {!profile.isEmpty && !profile.admin && (
             <Menu.Item key="jobs">
               <NavLink to="/jobs">Jobs</NavLink>
-            </Menu.Item>
-          )}
-          {!profile.isEmpty && profile.admin && (
-            <Menu.Item key="reviewer-payments">
-              <NavLink to="/reviewer-payments">Reviewer Payments</NavLink>
             </Menu.Item>
           )}
         </SubMenu>

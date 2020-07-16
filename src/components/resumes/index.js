@@ -1,3 +1,4 @@
 import Resume from './Resume'
+import ReviewResume from './ReviewResume'
 
-export { Resume }
+export { Resume, ReviewResume }

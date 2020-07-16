@@ -3,13 +3,11 @@ import 'antd/dist/antd.css'
 import { Layout } from 'antd'
 import { Switch, Route, Router } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import Navbar from './layouts/Navbar'
-import SideBar from './layouts/SideBar'
 import Home from './Home'
-import { Dashboard, Tags, Payment, Jobs, ReviewerPayments } from './dashboard'
+import { Navbar, SideBar } from './layouts'
+import { Dashboard, Tags, Jobs } from './dashboard'
 import { Profile } from './auth'
-import Resume from './resumes/Resume'
-import ReviewResume from './resumes/ReviewResume'
+import { Resume, ReviewResume } from './resumes'
 import history from '../utils/history'
 
 const { Content } = Layout
@@ -30,15 +28,9 @@ const Page = () => {
                 <Route exact component={Dashboard} path="/dashboard" />
                 <Route exact component={Tags} path="/tags" />
                 <Route exact component={Jobs} path="/jobs" />
-                <Route exact component={Payment} path="/payment" />
                 <Route exact component={ReviewResume} path="/review/:uid" />
                 <Route exact component={Profile} path="/details" />
                 <Route exact component={Resume} path="/resume" />
-                <Route
-                  exact
-                  component={ReviewerPayments}
-                  path="/reviewer-payments"
-                />
               </Switch>
             </Content>
           </Layout>

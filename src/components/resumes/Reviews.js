@@ -18,7 +18,7 @@ import { selectReviews } from '../../utils/helpers'
 const Reviews = ({ uid }) => {
   const reviewsQuery = {
     collection: 'reviews',
-    orderBy: ['timestamp', 'desc']
+    orderBy: ['timestamp', 'asc']
   }
   useFirestoreConnect(() => [reviewsQuery])
   const firestore = useFirestore()

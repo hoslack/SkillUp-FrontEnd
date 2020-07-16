@@ -162,7 +162,6 @@ const ReviewResume = ({ match: { params } }) => {
                 }}
               />
             </Col>
-
             <Col span={6}>
               <Reviews uid={uid} />
             </Col>

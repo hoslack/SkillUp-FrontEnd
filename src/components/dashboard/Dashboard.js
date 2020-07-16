@@ -24,15 +24,8 @@ const Dashboard = () => {
     setSearch('')
   }
 
-  const getSubscribedUsers = (users = []) => {
-    return (
-      users.filter(user => {
-        const userSubscription =
-          user.subscription === '' ? '' : new Date(user.subscription)
-        return userSubscription > new Date() || user.admin
-      }) || []
-    )
-  }
+  const getUsersWithResume = (users = []) =>
+    users.filter(user => user.resume !== '')
 
   const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({
@@ -142,7 +135,7 @@ const Dashboard = () => {
       <Table
         rowKey={record => record.id}
         columns={columns}
-        dataSource={getSubscribedUsers(users) || []}
+        dataSource={getUsersWithResume(users) || []}
         pagination={{ position: ['', 'bottomCenter'], simple: true }}
       />
     </div>

@@ -82,17 +82,9 @@ const Profile = () => {
               {profile.profession}
             </Descriptions.Item>
             {profile.admin && (
-              <>
-                <Descriptions.Item label="Total Upvotes">
-                  {profile.votes}
-                </Descriptions.Item>
-                <Descriptions.Item label="Redeemed Votes">
-                  {profile.redeemedVotes || 0}
-                </Descriptions.Item>
-                <Descriptions.Item label="Billable Votes">
-                  {profile.votes - (profile.redeemedVotes || 0)}
-                </Descriptions.Item>
-              </>
+              <Descriptions.Item label="Total Upvotes">
+                {profile.votes}
+              </Descriptions.Item>
             )}
           </Descriptions>
         </PageHeader>
