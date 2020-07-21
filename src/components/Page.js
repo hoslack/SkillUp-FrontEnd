@@ -23,7 +23,7 @@ const Page = () => {
             <SideBar />
             <Content
               className="site-layout-content"
-              style={{ marginLeft: 200 }}>
+              >
               <Switch>
                 <Route exact component={Dashboard} path="/dashboard" />
                 <Route exact component={Tags} path="/tags" />
