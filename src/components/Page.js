@@ -1,4 +1,4 @@
-import React from 'react'
+import React  from 'react'
 import 'antd/dist/antd.css'
 import { Layout } from 'antd'
 import { Switch, Route, Router } from 'react-router-dom'
@@ -17,9 +17,9 @@ const Page = () => {
   return (
     <Router history={history}>
       {!profile.isEmpty ? (
-        <Layout>
+        <Layout style={{ minHeight: '100vh' }}>
           <Navbar />
-          <Layout>
+          <Layout className="site-layout">
             <SideBar />
             <Content
               className="site-layout-content"
