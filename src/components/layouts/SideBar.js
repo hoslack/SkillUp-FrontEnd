@@ -14,7 +14,6 @@ const SideBar = () => {
     const [collapsed, setCollapsed] = useState(false)
 
     const onCollapsed = collapsed => {
-        console.log(collapsed)
         setCollapsed(collapsed)
     }
 
