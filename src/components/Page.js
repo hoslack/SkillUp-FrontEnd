@@ -1,4 +1,4 @@
-import React  from 'react'
+import React from 'react'
 import 'antd/dist/antd.css'
 import { Layout } from 'antd'
 import { Switch, Route, Router } from 'react-router-dom'
