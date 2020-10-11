@@ -29,7 +29,8 @@ const PrivateLinks = () => {
           mode="horizontal"
           style={{
             lineHeight: '64px',
-            float: 'right',
+            display: 'flex',
+            justifyContent: 'flex-end',
             backgroundColor: 'transparent'
           }}>
           <Menu.Item disabled key="notifications">
@@ -63,8 +64,7 @@ const PrivateLinks = () => {
         width="60%"
         title="Notifications"
         visible={notificationsVisible}
-        onCancel={() => setNotificationsVisible(false)}
-      >
+        onCancel={() => setNotificationsVisible(false)}>
         <ReviewNotifications />
       </Modal>
     </div>

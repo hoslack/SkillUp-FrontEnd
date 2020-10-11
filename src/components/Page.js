@@ -17,13 +17,13 @@ const Page = () => {
   return (
     <Router history={history}>
       {!profile.isEmpty ? (
-        <Layout>
+        <Layout style={{ minHeight: '100vh' }}>
           <Navbar />
-          <Layout>
+          <Layout className="site-layout">
             <SideBar />
             <Content
               className="site-layout-content"
-              style={{ marginLeft: 200 }}>
+              >
               <Switch>
                 <Route exact component={Dashboard} path="/dashboard" />
                 <Route exact component={Tags} path="/tags" />

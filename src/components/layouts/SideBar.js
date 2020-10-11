@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { LaptopOutlined, UserOutlined } from '@ant-design/icons'
@@ -9,31 +9,27 @@ const { SubMenu } = Menu
 const { Sider } = Layout
 
 const SideBar = () => {
-  const location = getLocation()
+  const location = getLocation();
   const profile = useSelector(({ firebase: { profile } }) => profile)
+  const [collapsed, setCollapsed] = useState(false)
+
+  const onCollapsed = collapsed => {
+    setCollapsed(collapsed)
+  };
 
   return (
-    <Sider
-      width={200}
-      style={{
-        backgroundColor: 'white',
-        marginTop: '60px',
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
-        left: 0
-      }}>
+    <Sider collapsible collapsed={collapsed} onCollapse={onCollapsed}>
+      <div className="logo" />
       <Menu
-        mode="inline"
-        defaultSelectedKeys={[location.openKey]}
-        defaultOpenKeys={[`${location.selectedKey}-items`]}
-        style={{ minHeight: '100vh', borderRight: 0 }}>
+        theme="dark"
+        defaultSelectedKeys={[`${location.selectedKey}-items`]}
+        mode="inline">
         <SubMenu
           key="dashboard-items"
           title={
             <span>
               <LaptopOutlined />
-              Dashboard
+              {!collapsed && 'Dashboard'}
             </span>
           }>
           <Menu.Item key="dashboard">
@@ -54,7 +50,7 @@ const SideBar = () => {
           title={
             <span>
               <UserOutlined />
-              Profile
+              {!collapsed && 'Profile'}
             </span>
           }>
           <Menu.Item key="resume">
