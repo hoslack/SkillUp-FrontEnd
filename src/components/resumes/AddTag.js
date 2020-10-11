@@ -26,6 +26,7 @@ const AddTag = ({ uid, admin, reviewerName }) => {
       if (doc.recipient === uid && doc.sender === authId) {
         setTagAdded(true)
       }
+      return []
     })
   }, [authId, uid, tags])
 
