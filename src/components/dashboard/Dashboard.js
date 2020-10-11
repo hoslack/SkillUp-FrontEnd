@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useFirestoreConnect} from 'react-redux-firebase'
+import { useFirestoreConnect } from 'react-redux-firebase'
 import { Table, Input, Button } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import Highlighter from 'react-highlight-words'
